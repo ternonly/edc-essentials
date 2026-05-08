@@ -9,12 +9,48 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WholesaleRouteImport } from './routes/wholesale'
 import { Route as ShopTheKitRouteImport } from './routes/shop-the-kit'
+import { Route as ReturnPolicyRouteImport } from './routes/return-policy'
+import { Route as OurPromiseRouteImport } from './routes/our-promise'
+import { Route as CorporatePartnershipsRouteImport } from './routes/corporate-partnerships'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WholesaleRoute = WholesaleRouteImport.update({
+  id: '/wholesale',
+  path: '/wholesale',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShopTheKitRoute = ShopTheKitRouteImport.update({
   id: '/shop-the-kit',
   path: '/shop-the-kit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReturnPolicyRoute = ReturnPolicyRouteImport.update({
+  id: '/return-policy',
+  path: '/return-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OurPromiseRoute = OurPromiseRouteImport.update({
+  id: '/our-promise',
+  path: '/our-promise',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CorporatePartnershipsRoute = CorporatePartnershipsRouteImport.update({
+  id: '/corporate-partnerships',
+  path: '/corporate-partnerships',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,37 +61,128 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/corporate-partnerships': typeof CorporatePartnershipsRoute
+  '/our-promise': typeof OurPromiseRoute
+  '/return-policy': typeof ReturnPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
+  '/wholesale': typeof WholesaleRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/corporate-partnerships': typeof CorporatePartnershipsRoute
+  '/our-promise': typeof OurPromiseRoute
+  '/return-policy': typeof ReturnPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
+  '/wholesale': typeof WholesaleRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/corporate-partnerships': typeof CorporatePartnershipsRoute
+  '/our-promise': typeof OurPromiseRoute
+  '/return-policy': typeof ReturnPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
+  '/wholesale': typeof WholesaleRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/shop-the-kit'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/corporate-partnerships'
+    | '/our-promise'
+    | '/return-policy'
+    | '/shop-the-kit'
+    | '/wholesale'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/shop-the-kit'
-  id: '__root__' | '/' | '/shop-the-kit'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/corporate-partnerships'
+    | '/our-promise'
+    | '/return-policy'
+    | '/shop-the-kit'
+    | '/wholesale'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/corporate-partnerships'
+    | '/our-promise'
+    | '/return-policy'
+    | '/shop-the-kit'
+    | '/wholesale'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
+  CorporatePartnershipsRoute: typeof CorporatePartnershipsRoute
+  OurPromiseRoute: typeof OurPromiseRoute
+  ReturnPolicyRoute: typeof ReturnPolicyRoute
   ShopTheKitRoute: typeof ShopTheKitRoute
+  WholesaleRoute: typeof WholesaleRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/wholesale': {
+      id: '/wholesale'
+      path: '/wholesale'
+      fullPath: '/wholesale'
+      preLoaderRoute: typeof WholesaleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shop-the-kit': {
       id: '/shop-the-kit'
       path: '/shop-the-kit'
       fullPath: '/shop-the-kit'
       preLoaderRoute: typeof ShopTheKitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/return-policy': {
+      id: '/return-policy'
+      path: '/return-policy'
+      fullPath: '/return-policy'
+      preLoaderRoute: typeof ReturnPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/our-promise': {
+      id: '/our-promise'
+      path: '/our-promise'
+      fullPath: '/our-promise'
+      preLoaderRoute: typeof OurPromiseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/corporate-partnerships': {
+      id: '/corporate-partnerships'
+      path: '/corporate-partnerships'
+      fullPath: '/corporate-partnerships'
+      preLoaderRoute: typeof CorporatePartnershipsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,7 +197,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
+  CorporatePartnershipsRoute: CorporatePartnershipsRoute,
+  OurPromiseRoute: OurPromiseRoute,
+  ReturnPolicyRoute: ReturnPolicyRoute,
   ShopTheKitRoute: ShopTheKitRoute,
+  WholesaleRoute: WholesaleRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
