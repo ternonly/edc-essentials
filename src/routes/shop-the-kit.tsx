@@ -5,6 +5,7 @@ import pliersImg from "@/assets/pliers.jpg";
 import wrenchImg from "@/assets/wrench.jpg";
 import axeImg from "@/assets/axe.jpg";
 import giftBoxImg from "@/assets/gift-box.jpg";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/shop-the-kit")({
   validateSearch: z.object({ auto_kit: z.string().optional() }),
@@ -28,14 +29,16 @@ type ToolId = "pliers" | "wrench" | "axe";
 const PRICES: Record<ToolId, number> = { pliers: 52, wrench: 42, axe: 49 };
 const BOX_PRICE = 29;
 
-const PRODUCTS: {
+type ProductRow = {
   id: ToolId;
   module: string;
   name: string;
   image: string;
   price: number;
   specs: [string, string][];
-}[] = [
+};
+
+const DEFAULT_PRODUCTS: ProductRow[] = [
   {
     id: "pliers",
     module: "Module 01 — Pliers",
@@ -107,6 +110,7 @@ const VARIANTS: Record<string, { id: string; price: number }> = {
 function ShopTheKit() {
   const search = Route.useSearch();
   const [mode, setMode] = useState<"build" | "elite">("build");
+  const [products, setProducts] = useState<ProductRow[]>(DEFAULT_PRODUCTS);
   const [selected, setSelected] = useState<Record<ToolId, boolean>>({
     pliers: false,
     wrench: false,
@@ -118,6 +122,32 @@ function ShopTheKit() {
   const [drawer, setDrawer] = useState<ToolId | null>(null);
   const [cartState, setCartState] = useState<"idle" | "adding" | "added">("idle");
   const cartTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Overlay DB-managed product fields (image / name / price / specs) by slug.
+  useEffect(() => {
+    supabase
+      .from("products")
+      .select("slug,module_label,name,price,image_url,specs")
+      .in("slug", ["pliers", "wrench", "axe"])
+      .then(({ data }) => {
+        if (!data) return;
+        setProducts((prev) =>
+          prev.map((p) => {
+            const row = data.find((r) => r.slug === p.id);
+            if (!row) return p;
+            const usable = row.image_url && /^https?:\/\//.test(row.image_url);
+            return {
+              ...p,
+              module: row.module_label ?? p.module,
+              name: row.name ?? p.name,
+              price: row.price != null ? Number(row.price) : p.price,
+              image: usable ? row.image_url! : p.image,
+              specs: Array.isArray(row.specs) && row.specs.length ? (row.specs as any) : p.specs,
+            };
+          }),
+        );
+      });
+  }, []);
 
   // ?auto_kit=elite — auto-select all + box
   useEffect(() => {
@@ -218,8 +248,8 @@ function ShopTheKit() {
     }
   }, [drawer, lightbox]);
 
-  const previewProduct = preview ? PRODUCTS.find((p) => p.id === preview) : null;
-  const drawerProduct = drawer ? PRODUCTS.find((p) => p.id === drawer) : null;
+  const previewProduct = preview ? products.find((p) => p.id === preview) : null;
+  const drawerProduct = drawer ? products.find((p) => p.id === drawer) : null;
 
   const ctaLabel =
     cartState === "adding"
@@ -267,7 +297,7 @@ function ShopTheKit() {
             {!previewProduct && (
               <span className="preview-box__hint">Hover a product to preview</span>
             )}
-            {PRODUCTS.map((p) => (
+            {products.map((p) => (
               <img
                 key={p.id}
                 src={p.image}
@@ -283,7 +313,7 @@ function ShopTheKit() {
         {/* Cards + price */}
         <div>
           <div className="kit-cards">
-            {PRODUCTS.map((p) => (
+            {products.map((p) => (
               <div
                 key={p.id}
                 className={`kit-card ${selected[p.id] ? "selected" : ""}`}
@@ -426,7 +456,7 @@ function ShopTheKit() {
               <div className="drawer__section-title">Specifications</div>
               <table className="specs-table">
                 <tbody>
-                  {drawerProduct.specs.map(([k, v]) => (
+                  {drawerProduct.specs.map(([k, v]: [string, string]) => (
                     <tr key={k}>
                       <th>{k}</th>
                       <td>{v}</td>
