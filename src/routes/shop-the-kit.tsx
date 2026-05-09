@@ -5,6 +5,7 @@ import pliersImg from "@/assets/pliers.jpg";
 import wrenchImg from "@/assets/wrench.jpg";
 import axeImg from "@/assets/axe.jpg";
 import giftBoxImg from "@/assets/gift-box.jpg";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/shop-the-kit")({
   validateSearch: z.object({ auto_kit: z.string().optional() }),
