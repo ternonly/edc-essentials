@@ -1,15 +1,21 @@
 import { Link } from "@tanstack/react-router";
+import { useContentBlock } from "@/lib/site-content";
+
+const DEFAULTS = {
+  brand: "SURVIVAL72",
+  about: "Built for the 72 hours that matter. Professional-grade modular tools engineered for everyday carry and emergency readiness.",
+  copyright: "© 2024 Survival72™. All rights reserved.",
+  region: "GCC · COD · AED",
+};
 
 export function SiteFooter() {
+  const c = useContentBlock("site", "footer", DEFAULTS);
   return (
     <footer className="s72-footer">
       <div className="s72-footer__inner">
         <div>
-          <h4 style={{ letterSpacing: "3px" }}>SURVIVAL72</h4>
-          <p style={{ fontSize: 14, lineHeight: 1.7, color: "#999", maxWidth: 320 }}>
-            Built for the 72 hours that matter. Professional-grade modular tools
-            engineered for everyday carry and emergency readiness.
-          </p>
+          <h4 style={{ letterSpacing: "3px" }}>{c.brand}</h4>
+          <p style={{ fontSize: 14, lineHeight: 1.7, color: "#999", maxWidth: 320 }}>{c.about}</p>
         </div>
         <div>
           <h4>Shop</h4>
@@ -36,8 +42,8 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="s72-footer__bottom">
-        <span>© 2024 Survival72™. All rights reserved.</span>
-        <span>GCC · COD · AED</span>
+        <span>{c.copyright}</span>
+        <span>{c.region}</span>
       </div>
     </footer>
   );
