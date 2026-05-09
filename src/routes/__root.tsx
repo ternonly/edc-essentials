@@ -11,6 +11,7 @@ import {
 import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { SiteContentProvider } from "@/lib/site-content";
 
 function NotFoundComponent() {
   return (
@@ -115,11 +116,13 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SiteHeader />
-      <main>
-        <Outlet />
-      </main>
-      <SiteFooter />
+      <SiteContentProvider>
+        <SiteHeader />
+        <main>
+          <Outlet />
+        </main>
+        <SiteFooter />
+      </SiteContentProvider>
     </QueryClientProvider>
   );
 }
