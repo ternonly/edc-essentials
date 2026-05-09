@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { z } from "zod";
 import pliersImg from "@/assets/pliers.jpg";
@@ -329,16 +329,14 @@ function ShopTheKit() {
                   <div className="kit-card__name">{p.name}</div>
                   <div className="kit-card__row">
                     <span className="kit-card__price">${p.price}</span>
-                    <button
-                      type="button"
+                    <Link
+                      to="/products/$slug"
+                      params={{ slug: p.id }}
                       className="kit-card__details"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setDrawer(p.id);
-                      }}
+                      onClick={(e) => e.stopPropagation()}
                     >
                       View Details ›
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
