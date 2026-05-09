@@ -1,60 +1,68 @@
 import { Link } from "@tanstack/react-router";
 import giftBox from "@/assets/gift-box.jpg";
+import { useContentBlock } from "@/lib/site-content";
 
-const CARDS = [
-  {
-    icon: "🔧",
-    module: "Module 01",
-    title: "Precision Pliers",
-    body: "7.2-inch cold-forged steel. High-torque grip with integrated wire cutter and survival notch.",
-  },
-  {
-    icon: "🔩",
-    module: "Module 02",
-    title: "Roadside Wrench",
-    body: "Optimized for vehicle battery terminals and plumbing valves. Universal fit for emergency mechanics.",
-  },
-  {
-    icon: "🪓",
-    module: "Module 03",
-    title: "Breacher Axe",
-    body: "Short-handle emergency axe with 45-degree bevel. Engineered for entry, recovery, and heavy prep.",
-  },
-];
+type Card = { icon: string; module: string; title: string; body: string };
+
+const DEFAULTS = {
+  kicker: "The System",
+  title: "Three Modules. One System.",
+  subtitle: "Buy what you need. Add as you grow. Built to work alone — engineered to work together.",
+  cards: [
+    { icon: "🔧", module: "Module 01", title: "Precision Pliers", body: "7.2-inch cold-forged steel. High-torque grip with integrated wire cutter and survival notch." },
+    { icon: "🔩", module: "Module 02", title: "Roadside Wrench", body: "Optimized for vehicle battery terminals and plumbing valves. Universal fit for emergency mechanics." },
+    { icon: "🪓", module: "Module 03", title: "Breacher Axe", body: "Short-handle emergency axe with 45-degree bevel. Engineered for entry, recovery, and heavy prep." },
+  ] as Card[],
+  gift_image_url: "",
+  gift_tag: "The Ultimate Gift",
+  gift_title: "The Unboxing Experience",
+  gift_body: "Premium packaging engineered to feel as decisive as the tools inside. A gift that holds its weight — literally and figuratively.",
+  gift_bullets: [
+    "**Premium Packaging:** 2mm weighted gray-board box with a hidden magnetic closure.",
+    "**Protection:** Custom-cut high-density EVA foam lined with black suede.",
+    "**Education:** Includes the physical 24-page Survival72™ Field Guide.",
+  ] as string[],
+};
+
+function bold(text: string) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((p, i) =>
+    p.startsWith("**") && p.endsWith("**") ? <b key={i}>{p.slice(2, -2)}</b> : p,
+  );
+}
 
 export function System() {
+  const c = useContentBlock("home", "system", DEFAULTS);
+  const giftImg = c.gift_image_url || giftBox;
   return (
     <section className="s72-system">
       <div className="s72-section-head">
-        <span className="s72-kicker">The System</span>
-        <h2>Three Modules. One System.</h2>
-        <p>Buy what you need. Add as you grow. Built to work alone — engineered to work together.</p>
+        <span className="s72-kicker">{c.kicker}</span>
+        <h2>{c.title}</h2>
+        <p>{c.subtitle}</p>
       </div>
 
       <div className="s72-grid">
-        {CARDS.map((c) => (
-          <article className="s72-card" key={c.title}>
-            <span className="s72-card__icon" aria-hidden>{c.icon}</span>
-            <div className="s72-card__module">{c.module}</div>
-            <h3>{c.title}</h3>
-            <p>{c.body}</p>
+        {c.cards.map((card, i) => (
+          <article className="s72-card" key={i}>
+            <span className="s72-card__icon" aria-hidden>{card.icon}</span>
+            <div className="s72-card__module">{card.module}</div>
+            <h3>{card.title}</h3>
+            <p>{card.body}</p>
           </article>
         ))}
       </div>
 
       <div className="s72-gift-integration">
-        <img src={giftBox} alt="Elite magnetic gift box" loading="lazy" width={1024} height={1024} />
+        <img src={giftImg} alt="Gift box" loading="lazy" width={1024} height={1024} />
         <div>
-          <span className="s72-tag">The Ultimate Gift</span>
-          <h3>The Unboxing Experience</h3>
-          <p>
-            Premium packaging engineered to feel as decisive as the tools inside. A gift that holds
-            its weight — literally and figuratively.
-          </p>
+          <span className="s72-tag">{c.gift_tag}</span>
+          <h3>{c.gift_title}</h3>
+          <p>{c.gift_body}</p>
           <ul className="s72-checklist">
-            <li><b>Premium Packaging:</b> 2mm weighted gray-board box with a hidden magnetic closure.</li>
-            <li><b>Protection:</b> Custom-cut high-density EVA foam lined with black suede.</li>
-            <li><b>Education:</b> Includes the physical 24-page Survival72™ Field Guide.</li>
+            {c.gift_bullets.map((b, i) => (
+              <li key={i}>{bold(b)}</li>
+            ))}
           </ul>
           <Link to="/shop-the-kit" search={{ auto_kit: "elite" }} className="s72-btn">
             Configure Your Elite Gift Set

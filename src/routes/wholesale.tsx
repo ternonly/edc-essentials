@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { StaticPage } from "@/components/StaticPage";
+import { DynamicPage } from "@/components/DynamicPage";
 
 export const Route = createFileRoute("/wholesale")({
   head: () => ({
@@ -9,15 +9,14 @@ export const Route = createFileRoute("/wholesale")({
     ],
   }),
   component: () => (
-    <StaticPage
-      title="Wholesale & Custom"
-      intro="Bulk orders, corporate gifts, and custom branding for the Survival72 modular system."
-    >
-      <p>
-        We work with offices, fleets, oilfield service teams, and gifting concierges across the
-        GCC. Email <b>wholesale@survival72gear.com</b> with quantities, lead time, and any
-        co-branding requirements.
-      </p>
-    </StaticPage>
+    <DynamicPage
+      slug="wholesale"
+      defaults={{
+        title: "Wholesale & Custom",
+        intro: "Bulk orders, corporate gifts, and custom branding for the Survival72 modular system.",
+        body_md:
+          "We work with offices, fleets, oilfield service teams, and gifting concierges across the GCC. Email **wholesale@survival72gear.com** with quantities, lead time, and any co-branding requirements.",
+      }}
+    />
   ),
 });

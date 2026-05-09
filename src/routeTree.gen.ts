@@ -19,6 +19,8 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
+import { Route as AdminProductsIdRouteImport } from './routes/admin.products.$id'
 
 const WholesaleRoute = WholesaleRouteImport.update({
   id: '/wholesale',
@@ -70,11 +72,21 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProductsSlugRoute = ProductsSlugRouteImport.update({
+  id: '/products/$slug',
+  path: '/products/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminProductsIdRoute = AdminProductsIdRouteImport.update({
+  id: '/products/$id',
+  path: '/products/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/contact': typeof ContactRoute
   '/corporate-partnerships': typeof CorporatePartnershipsRoute
   '/login': typeof LoginRoute
@@ -82,11 +94,13 @@ export interface FileRoutesByFullPath {
   '/return-policy': typeof ReturnPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
   '/wholesale': typeof WholesaleRoute
+  '/products/$slug': typeof ProductsSlugRoute
+  '/admin/products/$id': typeof AdminProductsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/contact': typeof ContactRoute
   '/corporate-partnerships': typeof CorporatePartnershipsRoute
   '/login': typeof LoginRoute
@@ -94,12 +108,14 @@ export interface FileRoutesByTo {
   '/return-policy': typeof ReturnPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
   '/wholesale': typeof WholesaleRoute
+  '/products/$slug': typeof ProductsSlugRoute
+  '/admin/products/$id': typeof AdminProductsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/contact': typeof ContactRoute
   '/corporate-partnerships': typeof CorporatePartnershipsRoute
   '/login': typeof LoginRoute
@@ -107,6 +123,8 @@ export interface FileRoutesById {
   '/return-policy': typeof ReturnPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
   '/wholesale': typeof WholesaleRoute
+  '/products/$slug': typeof ProductsSlugRoute
+  '/admin/products/$id': typeof AdminProductsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,6 +139,8 @@ export interface FileRouteTypes {
     | '/return-policy'
     | '/shop-the-kit'
     | '/wholesale'
+    | '/products/$slug'
+    | '/admin/products/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +153,8 @@ export interface FileRouteTypes {
     | '/return-policy'
     | '/shop-the-kit'
     | '/wholesale'
+    | '/products/$slug'
+    | '/admin/products/$id'
   id:
     | '__root__'
     | '/'
@@ -145,12 +167,14 @@ export interface FileRouteTypes {
     | '/return-policy'
     | '/shop-the-kit'
     | '/wholesale'
+    | '/products/$slug'
+    | '/admin/products/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   ContactRoute: typeof ContactRoute
   CorporatePartnershipsRoute: typeof CorporatePartnershipsRoute
   LoginRoute: typeof LoginRoute
@@ -158,6 +182,7 @@ export interface RootRouteChildren {
   ReturnPolicyRoute: typeof ReturnPolicyRoute
   ShopTheKitRoute: typeof ShopTheKitRoute
   WholesaleRoute: typeof WholesaleRoute
+  ProductsSlugRoute: typeof ProductsSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -232,13 +257,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/products/$slug': {
+      id: '/products/$slug'
+      path: '/products/$slug'
+      fullPath: '/products/$slug'
+      preLoaderRoute: typeof ProductsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/products/$id': {
+      id: '/admin/products/$id'
+      path: '/products/$id'
+      fullPath: '/admin/products/$id'
+      preLoaderRoute: typeof AdminProductsIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
+
+interface AdminRouteChildren {
+  AdminProductsIdRoute: typeof AdminProductsIdRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminProductsIdRoute: AdminProductsIdRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   ContactRoute: ContactRoute,
   CorporatePartnershipsRoute: CorporatePartnershipsRoute,
   LoginRoute: LoginRoute,
@@ -246,17 +295,8 @@ const rootRouteChildren: RootRouteChildren = {
   ReturnPolicyRoute: ReturnPolicyRoute,
   ShopTheKitRoute: ShopTheKitRoute,
   WholesaleRoute: WholesaleRoute,
+  ProductsSlugRoute: ProductsSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

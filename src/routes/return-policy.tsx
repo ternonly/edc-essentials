@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { StaticPage } from "@/components/StaticPage";
+import { DynamicPage } from "@/components/DynamicPage";
 
 export const Route = createFileRoute("/return-policy")({
   head: () => ({
@@ -9,14 +9,14 @@ export const Route = createFileRoute("/return-policy")({
     ],
   }),
   component: () => (
-    <StaticPage
-      title="Return Policy"
-      intro="If a Survival72 module is not right for you, return it within 30 days for a full refund."
-    >
-      <p>
-        Items must be in resellable condition. Custom-engraved corporate orders are excluded.
-        Reach out to <b>support@survival72gear.com</b> to start a return.
-      </p>
-    </StaticPage>
+    <DynamicPage
+      slug="return-policy"
+      defaults={{
+        title: "Return Policy",
+        intro: "If a Survival72 module is not right for you, return it within 30 days for a full refund.",
+        body_md:
+          "Items must be in resellable condition. Custom-engraved corporate orders are excluded. Reach out to **support@survival72gear.com** to start a return.",
+      }}
+    />
   ),
 });
