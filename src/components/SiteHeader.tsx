@@ -1,9 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useAuth } from "@/hooks/use-auth";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
+  const { isAdmin } = useAuth();
 
   return (
     <header className="s72-header">
@@ -14,6 +16,7 @@ export function SiteHeader() {
           <Link to="/about">About</Link>
           <Link to="/wholesale">Wholesale</Link>
           <Link to="/contact">Contact</Link>
+          {isAdmin && <Link to="/admin">Admin</Link>}
         </nav>
         <Link to="/shop-the-kit" className="s72-cart">
           <span className="s72-cart-text">Cart</span>
@@ -35,6 +38,7 @@ export function SiteHeader() {
           <Link to="/about" onClick={close}>About</Link>
           <Link to="/wholesale" onClick={close}>Wholesale</Link>
           <Link to="/contact" onClick={close}>Contact</Link>
+          {isAdmin && <Link to="/admin" onClick={close}>Admin</Link>}
         </div>
       )}
     </header>
