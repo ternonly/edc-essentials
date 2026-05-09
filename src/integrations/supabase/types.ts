@@ -14,10 +14,90 @@ export type Database = {
   }
   public: {
     Tables: {
+      product_images: {
+        Row: {
+          alt: string
+          created_at: string
+          id: string
+          image_url: string
+          product_id: string
+          sort_order: number
+        }
+        Insert: {
+          alt?: string
+          created_at?: string
+          id?: string
+          image_url: string
+          product_id: string
+          sort_order?: number
+        }
+        Update: {
+          alt?: string
+          created_at?: string
+          id?: string
+          image_url?: string
+          product_id?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_images_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_reviews: {
+        Row: {
+          active: boolean
+          author: string
+          body: string
+          created_at: string
+          id: string
+          product_id: string
+          rating: number
+          sort_order: number
+          title: string
+        }
+        Insert: {
+          active?: boolean
+          author: string
+          body?: string
+          created_at?: string
+          id?: string
+          product_id: string
+          rating?: number
+          sort_order?: number
+          title?: string
+        }
+        Update: {
+          active?: boolean
+          author?: string
+          body?: string
+          created_at?: string
+          id?: string
+          product_id?: string
+          rating?: number
+          sort_order?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           active: boolean
           created_at: string
+          description: string
           id: string
           image_url: string | null
           module_label: string
@@ -27,10 +107,12 @@ export type Database = {
           sort_order: number
           specs: Json
           updated_at: string
+          video_url: string | null
         }
         Insert: {
           active?: boolean
           created_at?: string
+          description?: string
           id?: string
           image_url?: string | null
           module_label: string
@@ -40,10 +122,12 @@ export type Database = {
           sort_order?: number
           specs?: Json
           updated_at?: string
+          video_url?: string | null
         }
         Update: {
           active?: boolean
           created_at?: string
+          description?: string
           id?: string
           image_url?: string | null
           module_label?: string
@@ -53,6 +137,31 @@ export type Database = {
           sort_order?: number
           specs?: Json
           updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
+      site_content: {
+        Row: {
+          group_key: string
+          id: string
+          item_key: string
+          updated_at: string
+          value: Json
+        }
+        Insert: {
+          group_key: string
+          id?: string
+          item_key: string
+          updated_at?: string
+          value?: Json
+        }
+        Update: {
+          group_key?: string
+          id?: string
+          item_key?: string
+          updated_at?: string
+          value?: Json
         }
         Relationships: []
       }
