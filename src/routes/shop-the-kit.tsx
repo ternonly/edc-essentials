@@ -248,8 +248,8 @@ function ShopTheKit() {
     }
   }, [drawer, lightbox]);
 
-  const previewProduct = preview ? PRODUCTS.find((p) => p.id === preview) : null;
-  const drawerProduct = drawer ? PRODUCTS.find((p) => p.id === drawer) : null;
+  const previewProduct = preview ? products.find((p) => p.id === preview) : null;
+  const drawerProduct = drawer ? products.find((p) => p.id === drawer) : null;
 
   const ctaLabel =
     cartState === "adding"
@@ -297,7 +297,7 @@ function ShopTheKit() {
             {!previewProduct && (
               <span className="preview-box__hint">Hover a product to preview</span>
             )}
-            {PRODUCTS.map((p) => (
+            {products.map((p) => (
               <img
                 key={p.id}
                 src={p.image}
@@ -313,7 +313,7 @@ function ShopTheKit() {
         {/* Cards + price */}
         <div>
           <div className="kit-cards">
-            {PRODUCTS.map((p) => (
+            {products.map((p) => (
               <div
                 key={p.id}
                 className={`kit-card ${selected[p.id] ? "selected" : ""}`}
