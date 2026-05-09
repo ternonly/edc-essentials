@@ -10,7 +10,7 @@ export function SiteHeader() {
       <div className="s72-header__inner">
         <Link to="/" className="s72-logo" onClick={close}>SURVIVAL72</Link>
         <nav className="s72-nav">
-          <Link to="/shop-the-kit">Shop</Link>
+          <Link to="/shop-the-kit">Shop the Kit</Link>
           <Link to="/about">About</Link>
           <Link to="/wholesale">Wholesale</Link>
           <Link to="/contact">Contact</Link>
@@ -31,7 +31,7 @@ export function SiteHeader() {
       </div>
       {open && (
         <div className="s72-mobile-drawer">
-          <Link to="/shop-the-kit" onClick={close}>Shop</Link>
+          <Link to="/shop-the-kit" onClick={close}>Shop the Kit</Link>
           <Link to="/about" onClick={close}>About</Link>
           <Link to="/wholesale" onClick={close}>Wholesale</Link>
           <Link to="/contact" onClick={close}>Contact</Link>
