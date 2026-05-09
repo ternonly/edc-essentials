@@ -13,8 +13,10 @@ import { Route as WholesaleRouteImport } from './routes/wholesale'
 import { Route as ShopTheKitRouteImport } from './routes/shop-the-kit'
 import { Route as ReturnPolicyRouteImport } from './routes/return-policy'
 import { Route as OurPromiseRouteImport } from './routes/our-promise'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as CorporatePartnershipsRouteImport } from './routes/corporate-partnerships'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -38,6 +40,11 @@ const OurPromiseRoute = OurPromiseRouteImport.update({
   path: '/our-promise',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CorporatePartnershipsRoute = CorporatePartnershipsRouteImport.update({
   id: '/corporate-partnerships',
   path: '/corporate-partnerships',
@@ -46,6 +53,11 @@ const CorporatePartnershipsRoute = CorporatePartnershipsRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -62,8 +74,10 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/corporate-partnerships': typeof CorporatePartnershipsRoute
+  '/login': typeof LoginRoute
   '/our-promise': typeof OurPromiseRoute
   '/return-policy': typeof ReturnPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
@@ -72,8 +86,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/corporate-partnerships': typeof CorporatePartnershipsRoute
+  '/login': typeof LoginRoute
   '/our-promise': typeof OurPromiseRoute
   '/return-policy': typeof ReturnPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
@@ -83,8 +99,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/corporate-partnerships': typeof CorporatePartnershipsRoute
+  '/login': typeof LoginRoute
   '/our-promise': typeof OurPromiseRoute
   '/return-policy': typeof ReturnPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
@@ -95,8 +113,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/corporate-partnerships'
+    | '/login'
     | '/our-promise'
     | '/return-policy'
     | '/shop-the-kit'
@@ -105,8 +125,10 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/corporate-partnerships'
+    | '/login'
     | '/our-promise'
     | '/return-policy'
     | '/shop-the-kit'
@@ -115,8 +137,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/corporate-partnerships'
+    | '/login'
     | '/our-promise'
     | '/return-policy'
     | '/shop-the-kit'
@@ -126,8 +150,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRoute
   ContactRoute: typeof ContactRoute
   CorporatePartnershipsRoute: typeof CorporatePartnershipsRoute
+  LoginRoute: typeof LoginRoute
   OurPromiseRoute: typeof OurPromiseRoute
   ReturnPolicyRoute: typeof ReturnPolicyRoute
   ShopTheKitRoute: typeof ShopTheKitRoute
@@ -164,6 +190,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OurPromiseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/corporate-partnerships': {
       id: '/corporate-partnerships'
       path: '/corporate-partnerships'
@@ -176,6 +209,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -198,8 +238,10 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRoute,
   ContactRoute: ContactRoute,
   CorporatePartnershipsRoute: CorporatePartnershipsRoute,
+  LoginRoute: LoginRoute,
   OurPromiseRoute: OurPromiseRoute,
   ReturnPolicyRoute: ReturnPolicyRoute,
   ShopTheKitRoute: ShopTheKitRoute,
@@ -208,3 +250,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
