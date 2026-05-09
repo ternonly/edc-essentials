@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { StaticPage } from "@/components/StaticPage";
+import { DynamicPage } from "@/components/DynamicPage";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -9,14 +9,14 @@ export const Route = createFileRoute("/contact")({
     ],
   }),
   component: () => (
-    <StaticPage title="Contact" intro="We answer every message within one business day.">
-      <p>
-        General: <b>hello@survival72gear.com</b>
-        <br />
-        Support: <b>support@survival72gear.com</b>
-        <br />
-        Wholesale: <b>wholesale@survival72gear.com</b>
-      </p>
-    </StaticPage>
+    <DynamicPage
+      slug="contact"
+      defaults={{
+        title: "Contact",
+        intro: "We answer every message within one business day.",
+        body_md:
+          "General: **hello@survival72gear.com**\n\nSupport: **support@survival72gear.com**\n\nWholesale: **wholesale@survival72gear.com**",
+      }}
+    />
   ),
 });

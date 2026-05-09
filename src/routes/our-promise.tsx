@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { StaticPage } from "@/components/StaticPage";
+import { DynamicPage } from "@/components/DynamicPage";
 
 export const Route = createFileRoute("/our-promise")({
   head: () => ({
@@ -9,16 +9,14 @@ export const Route = createFileRoute("/our-promise")({
     ],
   }),
   component: () => (
-    <StaticPage
-      title="Our Promise"
-      intro="Four guarantees that come with every Survival72 module."
-    >
-      <ul style={{ paddingLeft: 18, lineHeight: 2 }}>
-        <li>Free shipping on orders over $100.</li>
-        <li>2-year guarantee on every module.</li>
-        <li>30-day returns, no questions asked.</li>
-        <li>Gift-ready magnetic box available at checkout.</li>
-      </ul>
-    </StaticPage>
+    <DynamicPage
+      slug="our-promise"
+      defaults={{
+        title: "Our Promise",
+        intro: "Four guarantees that come with every Survival72 module.",
+        body_md:
+          "- Free shipping on orders over $100.\n- 2-year guarantee on every module.\n- 30-day returns, no questions asked.\n- Gift-ready magnetic box available at checkout.",
+      }}
+    />
   ),
 });
