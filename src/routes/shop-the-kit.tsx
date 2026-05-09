@@ -456,7 +456,7 @@ function ShopTheKit() {
               <div className="drawer__section-title">Specifications</div>
               <table className="specs-table">
                 <tbody>
-                  {drawerProduct.specs.map(([k, v]) => (
+                  {drawerProduct.specs.map(([k, v]: [string, string]) => (
                     <tr key={k}>
                       <th>{k}</th>
                       <td>{v}</td>
