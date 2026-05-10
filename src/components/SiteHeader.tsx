@@ -21,7 +21,7 @@ function LangToggle() {
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
-  const { isAdmin } = useAuth();
+  const { isAdmin, user } = useAuth();
 
   return (
     <header className="s72-header">
