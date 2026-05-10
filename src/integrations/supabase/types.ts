@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      product_assets: {
+        Row: {
+          created_at: string
+          id: string
+          product_id: string
+          slot: string
+          type: string
+          updated_at: string
+          uploaded_by: string | null
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_id: string
+          slot: string
+          type: string
+          updated_at?: string
+          uploaded_by?: string | null
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_id?: string
+          slot?: string
+          type?: string
+          updated_at?: string
+          uploaded_by?: string | null
+          url?: string
+        }
+        Relationships: []
+      }
       product_images: {
         Row: {
           alt: string
