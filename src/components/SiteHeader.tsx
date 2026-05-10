@@ -1,6 +1,22 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/use-auth";
+
+function LangToggle() {
+  const { i18n } = useTranslation();
+  const next = i18n.language?.startsWith("ar") ? "en" : "ar";
+  return (
+    <button
+      type="button"
+      className="s72-lang"
+      onClick={() => i18n.changeLanguage(next)}
+      aria-label="Toggle language"
+    >
+      {next === "ar" ? "ع" : "EN"}
+    </button>
+  );
+}
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
