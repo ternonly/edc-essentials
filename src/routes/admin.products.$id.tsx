@@ -86,20 +86,26 @@ function EditProduct() {
     setBusy(false);
   }
 
-  async function addGalleryImage(file: File) {
+  async function addGalleryFiles(files: FileList) {
     setBusy(true);
-    const ext = file.name.split(".").pop() ?? "jpg";
-    const path = `${p!.slug}-gallery-${Date.now()}.${ext}`;
-    const { error: upErr } = await supabase.storage.from("product-images").upload(path, file, { upsert: true, contentType: file.type });
-    if (!upErr) {
+    let order = images.length;
+    for (const file of Array.from(files)) {
+      const ext = file.name.split(".").pop() ?? "jpg";
+      const path = `${p!.slug}-media-${Date.now()}-${order}.${ext}`;
+      const { error: upErr } = await supabase.storage.from("product-images").upload(path, file, { upsert: true, contentType: file.type });
+      if (upErr) { setMsg(upErr.message); continue; }
       const { data } = supabase.storage.from("product-images").getPublicUrl(path);
       const { error } = await supabase.from("product_images").insert({
-        product_id: p!.id, image_url: data.publicUrl, alt: "", sort_order: images.length,
+        product_id: p!.id, image_url: data.publicUrl, alt: "", sort_order: order++,
       });
       if (error) setMsg(error.message);
-      await reload();
-    } else setMsg(upErr.message);
+    }
+    await reload();
     setBusy(false);
+  }
+
+  function isVideo(url: string) {
+    return /\.(mp4|webm|mov|m4v|ogg)(\?|$)/i.test(url);
   }
 
   async function deleteImg(imgId: string) {
