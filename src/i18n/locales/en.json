@@ -2,8 +2,12 @@
   "nav": {
     "shop": "Shop the Kit",
     "about": "About",
+    "blog": "Blog",
     "b2b": "B2B",
     "contact": "Contact",
+    "track": "Track",
+    "account": "Account",
+    "signin": "Sign In",
     "admin": "Admin",
     "cart": "Cart"
   },
@@ -25,5 +29,48 @@
     "select": "Select a Module",
     "addToCart": "Add to Cart",
     "openFull": "Open Full Configurator →"
+  },
+  "footer": {
+    "shop": "Shop",
+    "company": "Company",
+    "support": "Support",
+    "rights": "All rights reserved.",
+    "tagline": "Built for the 72 hours that matter."
+  },
+  "track": {
+    "title": "Track Your Order",
+    "subtitle": "Enter your order number to see real-time shipping updates.",
+    "placeholder": "e.g. S72-10042",
+    "submit": "Track →",
+    "notFound": "Order not found",
+    "another": "← Track another order",
+    "noEvents": "No events yet. We will update this page as your order progresses."
+  },
+  "account": {
+    "title": "My Account",
+    "profile": "Profile",
+    "displayName": "Display name",
+    "phone": "Phone",
+    "save": "Save",
+    "saved": "Saved.",
+    "orders": "My Orders",
+    "noOrders": "No orders yet.",
+    "trackLink": "Track an order →",
+    "signOut": "Sign Out",
+    "verified": "GOVX VERIFIED"
+  },
+  "blog": {
+    "kicker": "Field Guide",
+    "title": "The Survival72 Blog",
+    "subtitle": "Practical, field-tested know-how for the 72 hours that matter.",
+    "all": "All",
+    "minRead": "min read",
+    "related": "Related reads",
+    "back": "← Field Guide",
+    "empty": "No articles yet. Check back soon."
+  },
+  "common": {
+    "loading": "Loading…",
+    "back": "← Back"
   }
 }
