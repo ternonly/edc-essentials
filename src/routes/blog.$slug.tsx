@@ -115,7 +115,7 @@ function BlogPost() {
       />
       {p.tags.length > 0 && (
         <div style={{ marginTop: 40, display: "flex", flexWrap: "wrap", gap: 8 }}>
-          {p.tags.map((t) => (
+          {p.tags.map((t: string) => (
             <span key={t} style={{ background: "#f4f1ea", color: "#666", padding: "4px 10px", borderRadius: 999, fontSize: 12 }}>
               #{t}
             </span>
