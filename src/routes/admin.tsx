@@ -54,6 +54,7 @@ values ('${user.id}', 'admin');`}
           <p style={{ color: "#666", fontSize: 13, margin: "4px 0 0" }}>{user.email}</p>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
+          <Link to="/admin/blog" style={btnSecondary}>Blog</Link>
           <Link to="/" style={btnSecondary}>查看前台</Link>
           <button onClick={signOut} style={btnSecondary}>Sign out</button>
         </div>

@@ -27,9 +27,12 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as TrackOrderRouteImport } from './routes/track.$order'
 import { Route as ProductsGiftBoxRouteImport } from './routes/products.gift-box'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AdminBlogRouteImport } from './routes/admin.blog'
 import { Route as AdminProductsIdRouteImport } from './routes/admin.products.$id'
 
 const WholesaleRoute = WholesaleRouteImport.update({
@@ -122,6 +125,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TrackOrderRoute = TrackOrderRouteImport.update({
   id: '/$order',
   path: '/$order',
@@ -136,6 +144,16 @@ const ProductsSlugRoute = ProductsSlugRouteImport.update({
   id: '/products/$slug',
   path: '/products/$slug',
   getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBlogRoute = AdminBlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminProductsIdRoute = AdminProductsIdRouteImport.update({
   id: '/products/$id',
@@ -162,9 +180,12 @@ export interface FileRoutesByFullPath {
   '/track': typeof TrackRouteWithChildren
   '/warranty': typeof WarrantyRoute
   '/wholesale': typeof WholesaleRoute
+  '/admin/blog': typeof AdminBlogRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products/gift-box': typeof ProductsGiftBoxRoute
   '/track/$order': typeof TrackOrderRoute
+  '/blog/': typeof BlogIndexRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
 }
 export interface FileRoutesByTo {
@@ -186,9 +207,12 @@ export interface FileRoutesByTo {
   '/track': typeof TrackRouteWithChildren
   '/warranty': typeof WarrantyRoute
   '/wholesale': typeof WholesaleRoute
+  '/admin/blog': typeof AdminBlogRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products/gift-box': typeof ProductsGiftBoxRoute
   '/track/$order': typeof TrackOrderRoute
+  '/blog': typeof BlogIndexRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
 }
 export interface FileRoutesById {
@@ -211,9 +235,12 @@ export interface FileRoutesById {
   '/track': typeof TrackRouteWithChildren
   '/warranty': typeof WarrantyRoute
   '/wholesale': typeof WholesaleRoute
+  '/admin/blog': typeof AdminBlogRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products/gift-box': typeof ProductsGiftBoxRoute
   '/track/$order': typeof TrackOrderRoute
+  '/blog/': typeof BlogIndexRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
 }
 export interface FileRouteTypes {
@@ -237,9 +264,12 @@ export interface FileRouteTypes {
     | '/track'
     | '/warranty'
     | '/wholesale'
+    | '/admin/blog'
+    | '/blog/$slug'
     | '/products/$slug'
     | '/products/gift-box'
     | '/track/$order'
+    | '/blog/'
     | '/admin/products/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -261,9 +291,12 @@ export interface FileRouteTypes {
     | '/track'
     | '/warranty'
     | '/wholesale'
+    | '/admin/blog'
+    | '/blog/$slug'
     | '/products/$slug'
     | '/products/gift-box'
     | '/track/$order'
+    | '/blog'
     | '/admin/products/$id'
   id:
     | '__root__'
@@ -285,9 +318,12 @@ export interface FileRouteTypes {
     | '/track'
     | '/warranty'
     | '/wholesale'
+    | '/admin/blog'
+    | '/blog/$slug'
     | '/products/$slug'
     | '/products/gift-box'
     | '/track/$order'
+    | '/blog/'
     | '/admin/products/$id'
   fileRoutesById: FileRoutesById
 }
@@ -310,8 +346,10 @@ export interface RootRouteChildren {
   TrackRoute: typeof TrackRouteWithChildren
   WarrantyRoute: typeof WarrantyRoute
   WholesaleRoute: typeof WholesaleRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
   ProductsGiftBoxRoute: typeof ProductsGiftBoxRoute
+  BlogIndexRoute: typeof BlogIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -442,6 +480,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/track/$order': {
       id: '/track/$order'
       path: '/$order'
@@ -463,6 +508,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/blog': {
+      id: '/admin/blog'
+      path: '/blog'
+      fullPath: '/admin/blog'
+      preLoaderRoute: typeof AdminBlogRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/products/$id': {
       id: '/admin/products/$id'
       path: '/products/$id'
@@ -474,10 +533,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminBlogRoute: typeof AdminBlogRoute
   AdminProductsIdRoute: typeof AdminProductsIdRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminBlogRoute: AdminBlogRoute,
   AdminProductsIdRoute: AdminProductsIdRoute,
 }
 
@@ -512,8 +573,10 @@ const rootRouteChildren: RootRouteChildren = {
   TrackRoute: TrackRouteWithChildren,
   WarrantyRoute: WarrantyRoute,
   WholesaleRoute: WholesaleRoute,
+  BlogSlugRoute: BlogSlugRoute,
   ProductsSlugRoute: ProductsSlugRoute,
   ProductsGiftBoxRoute: ProductsGiftBoxRoute,
+  BlogIndexRoute: BlogIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

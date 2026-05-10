@@ -31,9 +31,11 @@ export function SiteFooter() {
           <h4>Company</h4>
           <ul>
             <li><Link to="/about">About</Link></li>
+            <li><Link to="/blog">Blog</Link></li>
             <li><Link to="/our-promise">Our Promise</Link></li>
             <li><Link to="/corporate-partnerships">Corporate</Link></li>
             <li><Link to="/contact">Contact</Link></li>
+            <li><Link to="/track">Track Order</Link></li>
           </ul>
         </div>
         <div>
