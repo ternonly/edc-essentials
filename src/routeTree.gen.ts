@@ -19,6 +19,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProductsGiftBoxRouteImport } from './routes/products.gift-box'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 import { Route as AdminProductsIdRouteImport } from './routes/admin.products.$id'
 
@@ -72,6 +73,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProductsGiftBoxRoute = ProductsGiftBoxRouteImport.update({
+  id: '/products/gift-box',
+  path: '/products/gift-box',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsSlugRoute = ProductsSlugRouteImport.update({
   id: '/products/$slug',
   path: '/products/$slug',
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/shop-the-kit': typeof ShopTheKitRoute
   '/wholesale': typeof WholesaleRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/products/gift-box': typeof ProductsGiftBoxRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
 }
 export interface FileRoutesByTo {
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/shop-the-kit': typeof ShopTheKitRoute
   '/wholesale': typeof WholesaleRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/products/gift-box': typeof ProductsGiftBoxRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
 }
 export interface FileRoutesById {
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/shop-the-kit': typeof ShopTheKitRoute
   '/wholesale': typeof WholesaleRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/products/gift-box': typeof ProductsGiftBoxRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
 }
 export interface FileRouteTypes {
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/shop-the-kit'
     | '/wholesale'
     | '/products/$slug'
+    | '/products/gift-box'
     | '/admin/products/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
     | '/shop-the-kit'
     | '/wholesale'
     | '/products/$slug'
+    | '/products/gift-box'
     | '/admin/products/$id'
   id:
     | '__root__'
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
     | '/shop-the-kit'
     | '/wholesale'
     | '/products/$slug'
+    | '/products/gift-box'
     | '/admin/products/$id'
   fileRoutesById: FileRoutesById
 }
@@ -183,6 +195,7 @@ export interface RootRouteChildren {
   ShopTheKitRoute: typeof ShopTheKitRoute
   WholesaleRoute: typeof WholesaleRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
+  ProductsGiftBoxRoute: typeof ProductsGiftBoxRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -257,6 +270,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/products/gift-box': {
+      id: '/products/gift-box'
+      path: '/products/gift-box'
+      fullPath: '/products/gift-box'
+      preLoaderRoute: typeof ProductsGiftBoxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products/$slug': {
       id: '/products/$slug'
       path: '/products/$slug'
@@ -296,7 +316,18 @@ const rootRouteChildren: RootRouteChildren = {
   ShopTheKitRoute: ShopTheKitRoute,
   WholesaleRoute: WholesaleRoute,
   ProductsSlugRoute: ProductsSlugRoute,
+  ProductsGiftBoxRoute: ProductsGiftBoxRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
