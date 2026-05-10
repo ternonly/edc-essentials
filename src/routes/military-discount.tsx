@@ -15,13 +15,13 @@ export const Route = createFileRoute("/military-discount")({
         defaults={{
           kicker: "Service discount",
           title: "Military & First Responder — 10% Off",
-          intro: "Active military, law enforcement, firefighters, and EMS get 10% off every order. Verified through GOVX ID.",
+          intro:
+            "Active military, law enforcement, firefighters, and EMS get 10% off every order. Verified through GOVX ID.",
           body_md: `
 ## How GOVX verification works
-1. Click the **GOVX verification** link at checkout
-2. Sign in or create a GOVX ID account
-3. Verify your military / first responder status
-4. The discount is auto-applied to your cart
+1. Click **Verify with GOVX ID** below
+2. Enter your service category and ID
+3. Once verified, use code **GOVX10** at checkout for 10% off
 
 GOVX is an independent verification service trusted by hundreds of US-based brands. Survival72™ never sees your personal documents.
 
@@ -29,6 +29,11 @@ Questions: survival72bob@gmail.com
           `.trim(),
         }}
       />
+      <div style={{ textAlign: "center", padding: "0 24px 80px" }}>
+        <Link to="/govx-verify" className="s72-btn s72-btn-primary">
+          Verify with GOVX ID →
+        </Link>
+      </div>
     </div>
   ),
 });
