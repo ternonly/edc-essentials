@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/products/$slug")({
   head: ({ params }) => ({
@@ -54,11 +55,14 @@ function youtubeEmbed(url: string): string | null {
 
 function ProductDetail() {
   const { slug } = Route.useParams();
+  const { isAdmin } = useAuth();
   const [product, setProduct] = useState<Product | null>(null);
   const [images, setImages] = useState<GalleryImg[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [active, setActive] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [uploadMsg, setUploadMsg] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -102,6 +106,29 @@ function ProductDetail() {
   ];
   const current = allImages[active] ?? allImages[0];
   const embed = product.video_url ? youtubeEmbed(product.video_url) : null;
+
+  async function handleAdminUpload(files: FileList) {
+    if (!product) return;
+    setUploading(true);
+    setUploadMsg(null);
+    let order = images.length;
+    let added = 0;
+    for (const file of Array.from(files)) {
+      const ext = file.name.split(".").pop() ?? "jpg";
+      const path = `${product.slug}-media-${Date.now()}-${order}.${ext}`;
+      const { error: upErr } = await supabase.storage.from("product-images").upload(path, file, { upsert: true, contentType: file.type });
+      if (upErr) { setUploadMsg(upErr.message); continue; }
+      const { data } = supabase.storage.from("product-images").getPublicUrl(path);
+      const { data: row, error } = await supabase.from("product_images").insert({
+        product_id: product.id, image_url: data.publicUrl, alt: "", sort_order: order++,
+      }).select("id,image_url,alt,sort_order").single();
+      if (error) { setUploadMsg(error.message); continue; }
+      if (row) setImages((prev) => [...prev, row as any]);
+      added++;
+    }
+    setUploading(false);
+    if (added > 0) setUploadMsg(`✓ 已上传 ${added} 个文件`);
+  }
 
   return (
     <div style={{ maxWidth: 1200, margin: "0 auto", padding: "60px 24px" }}>
@@ -150,6 +177,27 @@ function ProductDetail() {
                   </button>
                 );
               })}
+            </div>
+          )}
+          {isAdmin && (
+            <div style={{ marginTop: 16, padding: 14, border: "1px dashed #C9A96E", borderRadius: 8, background: "#fafaf7" }}>
+              <div style={{ fontSize: 12, color: "#888", marginBottom: 8, letterSpacing: 1, textTransform: "uppercase" }}>
+                管理员快捷上传
+              </div>
+              <label style={{ display: "block", padding: 14, textAlign: "center", cursor: "pointer", color: "#666", fontSize: 13, background: "#fff", border: "1px solid #eee", borderRadius: 6 }}>
+                {uploading ? "上传中…" : "📤 点击选择图片 / 视频（可多选）"}
+                <input
+                  type="file"
+                  accept="image/*,video/*"
+                  multiple
+                  style={{ display: "none" }}
+                  onChange={(e) => e.target.files && e.target.files.length > 0 && handleAdminUpload(e.target.files)}
+                />
+              </label>
+              {uploadMsg && <div style={{ marginTop: 8, fontSize: 12, color: "#444" }}>{uploadMsg}</div>}
+              <div style={{ marginTop: 8, fontSize: 11, color: "#999" }}>
+                需更详细管理（删除 / 排序 / alt）请到 <Link to="/admin/products/$id" params={{ id: product.id }} style={{ color: "#C9A96E" }}>编辑详情</Link>
+              </div>
             </div>
           )}
         </div>
