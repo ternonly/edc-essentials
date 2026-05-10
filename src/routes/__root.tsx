@@ -12,6 +12,7 @@ import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteContentProvider } from "@/lib/site-content";
+import "@/i18n";
 
 function NotFoundComponent() {
   return (
