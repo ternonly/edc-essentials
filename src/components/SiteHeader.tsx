@@ -34,6 +34,7 @@ export function SiteHeader() {
           <Link to="/contact">Contact</Link>
           {isAdmin && <Link to="/admin">Admin</Link>}
         </nav>
+        <LangToggle />
         <Link to="/shop-the-kit" className="s72-cart">
           <span className="s72-cart-text">Cart</span>
           <span className="s72-cart__badge">0</span>
