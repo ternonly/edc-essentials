@@ -109,32 +109,47 @@ function ProductDetail() {
         <div>
           <div style={{ background: "#F9F8F6", borderRadius: 8, overflow: "hidden", aspectRatio: "1/1", display: "flex", alignItems: "center", justifyContent: "center" }}>
             {current ? (
-              <img src={current.image_url} alt={current.alt || product.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              /\.(mp4|webm|mov|m4v|ogg)(\?|$)/i.test(current.image_url) ? (
+                <video src={current.image_url} controls style={{ width: "100%", height: "100%", objectFit: "contain", background: "#000" }} />
+              ) : (
+                <img src={current.image_url} alt={current.alt || product.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              )
             ) : (
               <span style={{ color: "#bbb" }}>No image</span>
             )}
           </div>
           {allImages.length > 1 && (
             <div style={{ display: "flex", gap: 10, marginTop: 14, flexWrap: "wrap" }}>
-              {allImages.map((img, i) => (
-                <button
-                  key={img.id}
-                  onClick={() => setActive(i)}
-                  style={{
-                    width: 76,
-                    height: 76,
-                    border: i === active ? "2px solid #C9A96E" : "2px solid transparent",
-                    borderRadius: 6,
-                    overflow: "hidden",
-                    background: "#F9F8F6",
-                    cursor: "pointer",
-                    padding: 0,
-                  }}
-                  aria-label={`View image ${i + 1}`}
-                >
-                  <img src={img.image_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                </button>
-              ))}
+              {allImages.map((img, i) => {
+                const video = /\.(mp4|webm|mov|m4v|ogg)(\?|$)/i.test(img.image_url);
+                return (
+                  <button
+                    key={img.id}
+                    onClick={() => setActive(i)}
+                    style={{
+                      width: 76,
+                      height: 76,
+                      border: i === active ? "2px solid #C9A96E" : "2px solid transparent",
+                      borderRadius: 6,
+                      overflow: "hidden",
+                      background: "#000",
+                      cursor: "pointer",
+                      padding: 0,
+                      position: "relative",
+                    }}
+                    aria-label={`View media ${i + 1}`}
+                  >
+                    {video ? (
+                      <>
+                        <video src={img.image_url} muted style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                        <span style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 22, textShadow: "0 1px 4px rgba(0,0,0,0.6)", pointerEvents: "none" }}>▶</span>
+                      </>
+                    ) : (
+                      <img src={img.image_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    )}
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>
