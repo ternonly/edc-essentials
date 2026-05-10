@@ -56,6 +56,7 @@ export function SiteHeader() {
         <div className="s72-mobile-drawer">
           <Link to="/shop-the-kit" onClick={close}>Shop the Kit</Link>
           <Link to="/about" onClick={close}>About</Link>
+          <Link to="/blog" onClick={close}>Blog</Link>
           <Link to="/wholesale" onClick={close}>B2B</Link>
           <Link to="/contact" onClick={close}>Contact</Link>
           <Link to="/track" onClick={close}>Track</Link>
