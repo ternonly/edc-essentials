@@ -23,6 +23,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as GovxVerifyRouteImport } from './routes/govx-verify'
 import { Route as CorporatePartnershipsRouteImport } from './routes/corporate-partnerships'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CartRouteImport } from './routes/cart'
 import { Route as CancellationPolicyRouteImport } from './routes/cancellation-policy'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AccountRouteImport } from './routes/account'
@@ -106,6 +107,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CartRoute = CartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CancellationPolicyRoute = CancellationPolicyRouteImport.update({
   id: '/cancellation-policy',
   path: '/cancellation-policy',
@@ -173,6 +179,7 @@ export interface FileRoutesByFullPath {
   '/account': typeof AccountRoute
   '/admin': typeof AdminRouteWithChildren
   '/cancellation-policy': typeof CancellationPolicyRoute
+  '/cart': typeof CartRoute
   '/contact': typeof ContactRoute
   '/corporate-partnerships': typeof CorporatePartnershipsRoute
   '/govx-verify': typeof GovxVerifyRoute
@@ -201,6 +208,7 @@ export interface FileRoutesByTo {
   '/account': typeof AccountRoute
   '/admin': typeof AdminRouteWithChildren
   '/cancellation-policy': typeof CancellationPolicyRoute
+  '/cart': typeof CartRoute
   '/contact': typeof ContactRoute
   '/corporate-partnerships': typeof CorporatePartnershipsRoute
   '/govx-verify': typeof GovxVerifyRoute
@@ -230,6 +238,7 @@ export interface FileRoutesById {
   '/account': typeof AccountRoute
   '/admin': typeof AdminRouteWithChildren
   '/cancellation-policy': typeof CancellationPolicyRoute
+  '/cart': typeof CartRoute
   '/contact': typeof ContactRoute
   '/corporate-partnerships': typeof CorporatePartnershipsRoute
   '/govx-verify': typeof GovxVerifyRoute
@@ -260,6 +269,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/admin'
     | '/cancellation-policy'
+    | '/cart'
     | '/contact'
     | '/corporate-partnerships'
     | '/govx-verify'
@@ -288,6 +298,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/admin'
     | '/cancellation-policy'
+    | '/cart'
     | '/contact'
     | '/corporate-partnerships'
     | '/govx-verify'
@@ -316,6 +327,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/admin'
     | '/cancellation-policy'
+    | '/cart'
     | '/contact'
     | '/corporate-partnerships'
     | '/govx-verify'
@@ -345,6 +357,7 @@ export interface RootRouteChildren {
   AccountRoute: typeof AccountRoute
   AdminRoute: typeof AdminRouteWithChildren
   CancellationPolicyRoute: typeof CancellationPolicyRoute
+  CartRoute: typeof CartRoute
   ContactRoute: typeof ContactRoute
   CorporatePartnershipsRoute: typeof CorporatePartnershipsRoute
   GovxVerifyRoute: typeof GovxVerifyRoute
@@ -465,6 +478,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cart': {
+      id: '/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof CartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cancellation-policy': {
       id: '/cancellation-policy'
       path: '/cancellation-policy'
@@ -580,6 +600,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccountRoute: AccountRoute,
   AdminRoute: AdminRouteWithChildren,
   CancellationPolicyRoute: CancellationPolicyRoute,
+  CartRoute: CartRoute,
   ContactRoute: ContactRoute,
   CorporatePartnershipsRoute: CorporatePartnershipsRoute,
   GovxVerifyRoute: GovxVerifyRoute,
