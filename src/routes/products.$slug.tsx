@@ -179,6 +179,27 @@ function ProductDetail() {
               })}
             </div>
           )}
+          {isAdmin && (
+            <div style={{ marginTop: 16, padding: 14, border: "1px dashed #C9A96E", borderRadius: 8, background: "#fafaf7" }}>
+              <div style={{ fontSize: 12, color: "#888", marginBottom: 8, letterSpacing: 1, textTransform: "uppercase" }}>
+                管理员快捷上传
+              </div>
+              <label style={{ display: "block", padding: 14, textAlign: "center", cursor: "pointer", color: "#666", fontSize: 13, background: "#fff", border: "1px solid #eee", borderRadius: 6 }}>
+                {uploading ? "上传中…" : "📤 点击选择图片 / 视频（可多选）"}
+                <input
+                  type="file"
+                  accept="image/*,video/*"
+                  multiple
+                  style={{ display: "none" }}
+                  onChange={(e) => e.target.files && e.target.files.length > 0 && handleAdminUpload(e.target.files)}
+                />
+              </label>
+              {uploadMsg && <div style={{ marginTop: 8, fontSize: 12, color: "#444" }}>{uploadMsg}</div>}
+              <div style={{ marginTop: 8, fontSize: 11, color: "#999" }}>
+                需更详细管理（删除 / 排序 / alt）请到 <Link to="/admin/products/$id" params={{ id: product.id }} style={{ color: "#C9A96E" }}>编辑详情</Link>
+              </div>
+            </div>
+          )}
         </div>
 
         <div>
