@@ -27,6 +27,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TrackOrderRouteImport } from './routes/track.$order'
 import { Route as ProductsGiftBoxRouteImport } from './routes/products.gift-box'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 import { Route as AdminProductsIdRouteImport } from './routes/admin.products.$id'
@@ -121,6 +122,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TrackOrderRoute = TrackOrderRouteImport.update({
+  id: '/$order',
+  path: '/$order',
+  getParentRoute: () => TrackRoute,
+} as any)
 const ProductsGiftBoxRoute = ProductsGiftBoxRouteImport.update({
   id: '/products/gift-box',
   path: '/products/gift-box',
@@ -153,11 +159,12 @@ export interface FileRoutesByFullPath {
   '/shipping-policy': typeof ShippingPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/track': typeof TrackRoute
+  '/track': typeof TrackRouteWithChildren
   '/warranty': typeof WarrantyRoute
   '/wholesale': typeof WholesaleRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products/gift-box': typeof ProductsGiftBoxRoute
+  '/track/$order': typeof TrackOrderRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
 }
 export interface FileRoutesByTo {
@@ -176,11 +183,12 @@ export interface FileRoutesByTo {
   '/shipping-policy': typeof ShippingPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/track': typeof TrackRoute
+  '/track': typeof TrackRouteWithChildren
   '/warranty': typeof WarrantyRoute
   '/wholesale': typeof WholesaleRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products/gift-box': typeof ProductsGiftBoxRoute
+  '/track/$order': typeof TrackOrderRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
 }
 export interface FileRoutesById {
@@ -200,11 +208,12 @@ export interface FileRoutesById {
   '/shipping-policy': typeof ShippingPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/track': typeof TrackRoute
+  '/track': typeof TrackRouteWithChildren
   '/warranty': typeof WarrantyRoute
   '/wholesale': typeof WholesaleRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products/gift-box': typeof ProductsGiftBoxRoute
+  '/track/$order': typeof TrackOrderRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
 }
 export interface FileRouteTypes {
@@ -230,6 +239,7 @@ export interface FileRouteTypes {
     | '/wholesale'
     | '/products/$slug'
     | '/products/gift-box'
+    | '/track/$order'
     | '/admin/products/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -253,6 +263,7 @@ export interface FileRouteTypes {
     | '/wholesale'
     | '/products/$slug'
     | '/products/gift-box'
+    | '/track/$order'
     | '/admin/products/$id'
   id:
     | '__root__'
@@ -276,6 +287,7 @@ export interface FileRouteTypes {
     | '/wholesale'
     | '/products/$slug'
     | '/products/gift-box'
+    | '/track/$order'
     | '/admin/products/$id'
   fileRoutesById: FileRoutesById
 }
@@ -295,7 +307,7 @@ export interface RootRouteChildren {
   ShippingPolicyRoute: typeof ShippingPolicyRoute
   ShopTheKitRoute: typeof ShopTheKitRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
-  TrackRoute: typeof TrackRoute
+  TrackRoute: typeof TrackRouteWithChildren
   WarrantyRoute: typeof WarrantyRoute
   WholesaleRoute: typeof WholesaleRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
@@ -430,6 +442,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/track/$order': {
+      id: '/track/$order'
+      path: '/$order'
+      fullPath: '/track/$order'
+      preLoaderRoute: typeof TrackOrderRouteImport
+      parentRoute: typeof TrackRoute
+    }
     '/products/gift-box': {
       id: '/products/gift-box'
       path: '/products/gift-box'
@@ -464,6 +483,16 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface TrackRouteChildren {
+  TrackOrderRoute: typeof TrackOrderRoute
+}
+
+const TrackRouteChildren: TrackRouteChildren = {
+  TrackOrderRoute: TrackOrderRoute,
+}
+
+const TrackRouteWithChildren = TrackRoute._addFileChildren(TrackRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -480,7 +509,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShippingPolicyRoute: ShippingPolicyRoute,
   ShopTheKitRoute: ShopTheKitRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
-  TrackRoute: TrackRoute,
+  TrackRoute: TrackRouteWithChildren,
   WarrantyRoute: WarrantyRoute,
   WholesaleRoute: WholesaleRoute,
   ProductsSlugRoute: ProductsSlugRoute,
