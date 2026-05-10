@@ -203,28 +203,38 @@ function ShopTheKit() {
     setMode("build");
   }
 
+  function writeCart() {
+    if (!variant) return;
+    try {
+      const cart = JSON.parse(localStorage.getItem("s72_cart") ?? "[]");
+      cart.push({ variantId: variant.id, price: variant.price, key: variantKey, ts: Date.now() });
+      localStorage.setItem("s72_cart", JSON.stringify(cart));
+    } catch {
+      /* noop */
+    }
+  }
+
   async function addToCart() {
     if (!variant || cartState !== "idle") return;
     setCartState("adding");
     try {
-      // Try Shopify cart endpoint; gracefully fall back to localStorage
       await fetch("/cart/add.js", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ items: [{ id: variant.id, quantity: 1 }] }),
       }).catch(() => null);
     } finally {
-      try {
-        const cart = JSON.parse(localStorage.getItem("s72_cart") ?? "[]");
-        cart.push({ variantId: variant.id, price: variant.price, key: variantKey, ts: Date.now() });
-        localStorage.setItem("s72_cart", JSON.stringify(cart));
-      } catch {
-        /* noop */
-      }
+      writeCart();
       setCartState("added");
       if (cartTimer.current) clearTimeout(cartTimer.current);
       cartTimer.current = setTimeout(() => setCartState("idle"), 2000);
     }
+  }
+
+  function buyNow() {
+    if (!variant) return;
+    writeCart();
+    window.location.href = "/checkout.html";
   }
 
   // ESC closes drawer / lightbox
