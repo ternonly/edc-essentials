@@ -329,14 +329,16 @@ function ShopTheKit() {
                   <div className="kit-card__name">{p.name}</div>
                   <div className="kit-card__row">
                     <span className="kit-card__price">${p.price}</span>
-                    <Link
-                      to="/products/$slug"
-                      params={{ slug: p.id }}
+                    <button
+                      type="button"
                       className="kit-card__details"
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDrawer(p.id);
+                      }}
                     >
                       View Details ›
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </div>
