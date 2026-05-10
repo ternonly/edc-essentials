@@ -6,6 +6,7 @@ import wrenchImg from "@/assets/wrench.jpg";
 import axeImg from "@/assets/axe.jpg";
 import giftBoxImg from "@/assets/gift-box.jpg";
 import { supabase } from "@/integrations/supabase/client";
+import { MediaSlots } from "@/components/MediaSlots";
 
 export const Route = createFileRoute("/shop-the-kit")({
   validateSearch: z.object({ auto_kit: z.string().optional() }),
@@ -119,7 +120,7 @@ function ShopTheKit() {
   const [box, setBox] = useState(false);
   const [preview, setPreview] = useState<ToolId | null>(null);
   const [lightbox, setLightbox] = useState<string | null>(null);
-  const [drawer, setDrawer] = useState<ToolId | null>(null);
+  const [drawer, setDrawer] = useState<ToolId | "gift" | null>(null);
   const [cartState, setCartState] = useState<"idle" | "adding" | "added">("idle");
   const cartTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -249,7 +250,7 @@ function ShopTheKit() {
   }, [drawer, lightbox]);
 
   const previewProduct = preview ? products.find((p) => p.id === preview) : null;
-  const drawerProduct = drawer ? products.find((p) => p.id === drawer) : null;
+  const drawerProduct = drawer && drawer !== "gift" ? products.find((p) => p.id === drawer) : null;
 
   const ctaLabel =
     cartState === "adding"
