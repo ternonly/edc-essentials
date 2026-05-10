@@ -86,20 +86,26 @@ function EditProduct() {
     setBusy(false);
   }
 
-  async function addGalleryImage(file: File) {
+  async function addGalleryFiles(files: FileList) {
     setBusy(true);
-    const ext = file.name.split(".").pop() ?? "jpg";
-    const path = `${p!.slug}-gallery-${Date.now()}.${ext}`;
-    const { error: upErr } = await supabase.storage.from("product-images").upload(path, file, { upsert: true, contentType: file.type });
-    if (!upErr) {
+    let order = images.length;
+    for (const file of Array.from(files)) {
+      const ext = file.name.split(".").pop() ?? "jpg";
+      const path = `${p!.slug}-media-${Date.now()}-${order}.${ext}`;
+      const { error: upErr } = await supabase.storage.from("product-images").upload(path, file, { upsert: true, contentType: file.type });
+      if (upErr) { setMsg(upErr.message); continue; }
       const { data } = supabase.storage.from("product-images").getPublicUrl(path);
       const { error } = await supabase.from("product_images").insert({
-        product_id: p!.id, image_url: data.publicUrl, alt: "", sort_order: images.length,
+        product_id: p!.id, image_url: data.publicUrl, alt: "", sort_order: order++,
       });
       if (error) setMsg(error.message);
-      await reload();
-    } else setMsg(upErr.message);
+    }
+    await reload();
     setBusy(false);
+  }
+
+  function isVideo(url: string) {
+    return /\.(mp4|webm|mov|m4v|ogg)(\?|$)/i.test(url);
   }
 
   async function deleteImg(imgId: string) {
@@ -205,12 +211,29 @@ function EditProduct() {
 
       {/* Gallery */}
       <section style={cardStyle}>
-        <h2 style={h2}>图片库（详情页画廊）</h2>
+        <h2 style={h2}>媒体库（图片 / 视频）</h2>
+        <p style={{ fontSize: 12, color: "#888", margin: "0 0 12px" }}>
+          支持多选上传。图片格式：JPG / PNG / WEBP。视频格式：MP4 / WEBM / MOV。
+        </p>
+        <label style={{ display: "block", border: "2px dashed #C9A96E", borderRadius: 8, padding: 28, textAlign: "center", cursor: "pointer", color: "#666", fontSize: 14, marginBottom: 16, background: "#fafaf7" }}>
+          {busy ? "上传中…" : "📤 点击或拖拽到这里上传图片 / 视频（可多选）"}
+          <input
+            type="file"
+            accept="image/*,video/*"
+            multiple
+            style={{ display: "none" }}
+            onChange={(e) => e.target.files && e.target.files.length > 0 && addGalleryFiles(e.target.files)}
+          />
+        </label>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: 12 }}>
           {images.map((img, i) => (
             <div key={img.id} style={{ border: "1px solid #eee", borderRadius: 6, padding: 8, background: "#fafafa" }}>
-              <div style={{ aspectRatio: "1/1", background: "#fff", borderRadius: 4, overflow: "hidden", marginBottom: 8 }}>
-                <img src={img.image_url} alt={img.alt} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <div style={{ aspectRatio: "1/1", background: "#000", borderRadius: 4, overflow: "hidden", marginBottom: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                {isVideo(img.image_url) ? (
+                  <video src={img.image_url} controls style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                ) : (
+                  <img src={img.image_url} alt={img.alt} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                )}
               </div>
               <input value={img.alt} onChange={(e) => setImages((prev) => prev.map((x) => x.id === img.id ? { ...x, alt: e.target.value } : x))} onBlur={(e) => setImgAlt(img.id, e.target.value)} placeholder="alt 文本" style={{ ...inputStyle, fontSize: 12, padding: "6px 8px" }} />
               <div style={{ display: "flex", gap: 4, marginTop: 6 }}>
@@ -220,10 +243,7 @@ function EditProduct() {
               </div>
             </div>
           ))}
-          <label style={{ border: "2px dashed #ddd", borderRadius: 6, padding: 12, display: "flex", alignItems: "center", justifyContent: "center", minHeight: 180, cursor: "pointer", color: "#888", fontSize: 13 }}>
-            {busy ? "上传中…" : "+ 添加图片"}
-            <input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => e.target.files?.[0] && addGalleryImage(e.target.files[0])} />
-          </label>
+          {images.length === 0 && <p style={{ color: "#888", fontSize: 13, gridColumn: "1 / -1", textAlign: "center", padding: "20px 0" }}>还没有任何媒体文件，点击上面的区域上传。</p>}
         </div>
       </section>
 
