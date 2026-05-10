@@ -370,6 +370,10 @@
       const orders = JSON.parse(localStorage.getItem('s72_orders') || '[]');
       orders.push({ orderId, paymentMethod, total, customer: d, items: cart.items, date: new Date().toISOString() });
       localStorage.setItem('s72_orders', JSON.stringify(orders));
+
+      // Clear cart after successful order
+      localStorage.removeItem('s72_cart');
+      try { window.dispatchEvent(new Event('s72-cart-changed')); } catch (e) {}
     }
 
     // ============================================================
