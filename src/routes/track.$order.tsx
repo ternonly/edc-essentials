@@ -57,7 +57,7 @@ function TrackOrder() {
   }, [order]);
 
   // Load Maps key
-  useEffect(() => { fetchKey().then((r) => setMapsKey(r.key)); }, [fetchKey]);
+  useEffect(() => { fetchKey({}).then((r: { key: string }) => setMapsKey(r.key)); }, [fetchKey]);
 
   // Inject Google Maps script and render
   useEffect(() => {
