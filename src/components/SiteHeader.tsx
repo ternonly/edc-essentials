@@ -51,6 +51,7 @@ export function SiteHeader() {
   const close = () => setOpen(false);
   const { isAdmin, user } = useAuth();
   const { t } = useTranslation();
+  const cartCount = useCartCount();
 
   return (
     <header className="s72-header">
