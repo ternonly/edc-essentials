@@ -30,14 +30,14 @@ function LoginPage() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: `${window.location.origin}/admin` },
+          options: { emailRedirectTo: `${window.location.origin}/account` },
         });
         if (error) throw error;
         setMsg("注册成功。如已开启邮箱验证请到邮箱激活后再登录。");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        navigate({ to: "/admin" });
+        navigate({ to: "/account" });
       }
     } catch (err: any) {
       setMsg(err.message ?? String(err));
