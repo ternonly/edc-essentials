@@ -32,6 +32,7 @@ import { Route as TrackOrderRouteImport } from './routes/track.$order'
 import { Route as ProductsGiftBoxRouteImport } from './routes/products.gift-box'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AdminBlogRouteImport } from './routes/admin.blog'
 import { Route as AdminProductsIdRouteImport } from './routes/admin.products.$id'
 
 const WholesaleRoute = WholesaleRouteImport.update({
@@ -149,6 +150,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminBlogRoute = AdminBlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminProductsIdRoute = AdminProductsIdRouteImport.update({
   id: '/products/$id',
   path: '/products/$id',
@@ -174,6 +180,7 @@ export interface FileRoutesByFullPath {
   '/track': typeof TrackRouteWithChildren
   '/warranty': typeof WarrantyRoute
   '/wholesale': typeof WholesaleRoute
+  '/admin/blog': typeof AdminBlogRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products/gift-box': typeof ProductsGiftBoxRoute
@@ -200,6 +207,7 @@ export interface FileRoutesByTo {
   '/track': typeof TrackRouteWithChildren
   '/warranty': typeof WarrantyRoute
   '/wholesale': typeof WholesaleRoute
+  '/admin/blog': typeof AdminBlogRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products/gift-box': typeof ProductsGiftBoxRoute
@@ -227,6 +235,7 @@ export interface FileRoutesById {
   '/track': typeof TrackRouteWithChildren
   '/warranty': typeof WarrantyRoute
   '/wholesale': typeof WholesaleRoute
+  '/admin/blog': typeof AdminBlogRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products/gift-box': typeof ProductsGiftBoxRoute
@@ -255,6 +264,7 @@ export interface FileRouteTypes {
     | '/track'
     | '/warranty'
     | '/wholesale'
+    | '/admin/blog'
     | '/blog/$slug'
     | '/products/$slug'
     | '/products/gift-box'
@@ -281,6 +291,7 @@ export interface FileRouteTypes {
     | '/track'
     | '/warranty'
     | '/wholesale'
+    | '/admin/blog'
     | '/blog/$slug'
     | '/products/$slug'
     | '/products/gift-box'
@@ -307,6 +318,7 @@ export interface FileRouteTypes {
     | '/track'
     | '/warranty'
     | '/wholesale'
+    | '/admin/blog'
     | '/blog/$slug'
     | '/products/$slug'
     | '/products/gift-box'
@@ -503,6 +515,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/blog': {
+      id: '/admin/blog'
+      path: '/blog'
+      fullPath: '/admin/blog'
+      preLoaderRoute: typeof AdminBlogRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/products/$id': {
       id: '/admin/products/$id'
       path: '/products/$id'
@@ -514,10 +533,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminBlogRoute: typeof AdminBlogRoute
   AdminProductsIdRoute: typeof AdminProductsIdRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminBlogRoute: AdminBlogRoute,
   AdminProductsIdRoute: AdminProductsIdRoute,
 }
 
@@ -560,3 +581,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
