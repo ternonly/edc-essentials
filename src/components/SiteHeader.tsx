@@ -32,6 +32,8 @@ export function SiteHeader() {
           <Link to="/about">About</Link>
           <Link to="/wholesale">B2B</Link>
           <Link to="/contact">Contact</Link>
+          <Link to="/track">Track</Link>
+          {user ? <Link to="/account">Account</Link> : <Link to="/login">Sign In</Link>}
           {isAdmin && <Link to="/admin">Admin</Link>}
         </nav>
         <LangToggle />
