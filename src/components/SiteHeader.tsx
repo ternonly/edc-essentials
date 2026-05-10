@@ -26,8 +26,8 @@ function useCartCount() {
   return count;
 }
 
-const LANG_CYCLE: Record<string, string> = { en: "ar", ar: "zh", zh: "en" };
-const LANG_LABEL: Record<string, string> = { en: "EN", ar: "ع", zh: "中" };
+const LANG_CYCLE: Record<string, string> = { en: "ar", ar: "en" };
+const LANG_LABEL: Record<string, string> = { en: "EN", ar: "ع" };
 
 function LangToggle() {
   const { i18n } = useTranslation();
