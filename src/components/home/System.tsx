@@ -1,18 +1,21 @@
 import { Link } from "@tanstack/react-router";
 import giftBox from "@/assets/gift-box.jpg";
+import pliersImg from "@/assets/product-pliers-cutout.png";
+import wrenchImg from "@/assets/product-wrench-cutout.png";
+import axeImg from "@/assets/product-axe-cutout.png";
 import { useContentBlock } from "@/lib/site-content";
 
-type Card = { icon: string; module: string; title: string; body: string };
+type Card = { icon?: string; image_url?: string; module: string; title: string; body: string };
 
 const DEFAULTS = {
   kicker: "The System",
   title: "Three Modules. One System.",
   subtitle: "Buy what you need. Add as you grow. Built to work alone — engineered to work together.",
-  cards: [
-    { icon: "🔧", module: "Module 01", title: "Precision Pliers", body: "7.2-inch cold-forged steel. High-torque grip with integrated wire cutter and survival notch." },
-    { icon: "🔩", module: "Module 02", title: "Roadside Wrench", body: "Optimized for vehicle battery terminals and plumbing valves. Universal fit for emergency mechanics." },
-    { icon: "🪓", module: "Module 03", title: "Breacher Axe", body: "Short-handle emergency axe with 45-degree bevel. Engineered for entry, recovery, and heavy prep." },
-  ] as Card[],
+    cards: [
+      { image_url: pliersImg, module: "Module 01", title: "Precision Pliers", body: "7.2-inch cold-forged steel. High-torque grip with integrated wire cutter and survival notch." },
+      { image_url: wrenchImg, module: "Module 02", title: "Roadside Wrench", body: "Optimized for vehicle battery terminals and plumbing valves. Universal fit for emergency mechanics." },
+      { image_url: axeImg, module: "Module 03", title: "Breacher Axe", body: "Short-handle emergency axe with 45-degree bevel. Engineered for entry, recovery, and heavy prep." },
+    ] as Card[],
   gift_image_url: "",
   gift_tag: "The Ultimate Gift",
   gift_title: "The Unboxing Experience",
@@ -45,7 +48,16 @@ export function System() {
       <div className="s72-grid">
         {c.cards.map((card, i) => (
           <article className="s72-card" key={i}>
-            <span className="s72-card__icon" aria-hidden>{card.icon}</span>
+            {card.image_url ? (
+              <img
+                src={card.image_url}
+                alt={card.title}
+                loading="lazy"
+                style={{ width: "100%", height: 200, objectFit: "contain", marginBottom: 16, display: "block" }}
+              />
+            ) : (
+              <span className="s72-card__icon" aria-hidden>{card.icon}</span>
+            )}
             <div className="s72-card__module">{card.module}</div>
             <h3>{card.title}</h3>
             <p>{card.body}</p>
