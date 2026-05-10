@@ -55,11 +55,14 @@ function youtubeEmbed(url: string): string | null {
 
 function ProductDetail() {
   const { slug } = Route.useParams();
+  const { isAdmin } = useAuth();
   const [product, setProduct] = useState<Product | null>(null);
   const [images, setImages] = useState<GalleryImg[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [active, setActive] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [uploadMsg, setUploadMsg] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
