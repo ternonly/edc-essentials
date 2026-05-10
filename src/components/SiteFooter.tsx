@@ -22,7 +22,7 @@ export function SiteFooter() {
           <ul>
             <li><Link to="/shop-the-kit">Shop the Kit</Link></li>
             <li><Link to="/shop-the-kit" search={{ auto_kit: "elite" }}>Elite Gift Set</Link></li>
-            <li><Link to="/wholesale">Wholesale</Link></li>
+            <li><Link to="/wholesale">Corporate & Government Procurement</Link></li>
           </ul>
         </div>
         <div>
