@@ -371,16 +371,15 @@
   gap: 24px;
 }
 .s72-card {
-  border: 1px solid #eee;
-  padding: 40px 32px;
+  border: none;
+  padding: 24px 16px;
   text-align: center;
-  background: #fff;
+  background: transparent;
   transition: 0.3s;
 }
 .s72-card:hover {
-  border-color: #1a1a1a;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-  transform: translateY(-2px);
+  box-shadow: none;
+  transform: translateY(-4px);
 }
 .s72-card__icon {
   font-size: 38px;
