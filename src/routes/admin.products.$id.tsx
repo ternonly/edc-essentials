@@ -34,12 +34,14 @@ function EditProduct() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/login" });
   }, [user, loading, navigate]);
 
   async function reload() {
+    setLoaded(false);
     const [{ data: prod }, { data: imgs }, { data: revs }] = await Promise.all([
       supabase.from("products").select("*").eq("id", id).maybeSingle(),
       supabase.from("product_images").select("*").eq("product_id", id).order("sort_order"),
@@ -48,11 +50,14 @@ function EditProduct() {
     setP(prod as any);
     setImages((imgs ?? []) as any);
     setReviews((revs ?? []) as any);
+    setLoaded(true);
   }
-  useEffect(() => { if (isAdmin) reload(); /* eslint-disable-next-line */ }, [isAdmin, id]);
+  useEffect(() => { if (!loading && isAdmin) void reload(); /* eslint-disable-next-line */ }, [loading, isAdmin, id]);
 
-  if (loading || !p) return <div style={{ padding: 40 }}>Loading…</div>;
+  if (loading) return <div style={{ padding: 40 }}>Loading…</div>;
   if (!isAdmin) return <div style={{ padding: 40 }}>无权限</div>;
+  if (!loaded) return <div style={{ padding: 40 }}>Loading…</div>;
+  if (!p) return <div style={{ padding: 40 }}>产品不存在或无法读取。</div>;
 
   function update(field: keyof Product, v: any) { setP((prev) => prev ? { ...prev, [field]: v } : prev); }
 

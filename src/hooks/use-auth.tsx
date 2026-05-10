@@ -9,43 +9,44 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 1) Listener FIRST
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, sess) => {
+    let cancelled = false;
+
+    async function applySession(sess: Session | null) {
+      if (cancelled) return;
       setSession(sess);
       setUser(sess?.user ?? null);
-      if (sess?.user) {
-        // defer to avoid recursive auth calls
-        setTimeout(() => {
-          supabase
-            .from("user_roles")
-            .select("role")
-            .eq("user_id", sess.user.id)
-            .eq("role", "admin")
-            .maybeSingle()
-            .then(({ data }) => setIsAdmin(!!data));
-        }, 0);
-      } else {
+
+      if (!sess?.user) {
         setIsAdmin(false);
+        setLoading(false);
+        return;
       }
-    });
 
-    // 2) THEN check existing session
-    supabase.auth.getSession().then(({ data: { session: sess } }) => {
-      setSession(sess);
-      setUser(sess?.user ?? null);
+      const { data } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", sess.user.id)
+        .eq("role", "admin")
+        .maybeSingle();
+
+      if (cancelled) return;
+      setIsAdmin(!!data);
       setLoading(false);
-      if (sess?.user) {
-        supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", sess.user.id)
-          .eq("role", "admin")
-          .maybeSingle()
-          .then(({ data }) => setIsAdmin(!!data));
-      }
+    }
+
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, sess) => {
+      setLoading(true);
+      setTimeout(() => { void applySession(sess); }, 0);
     });
 
-    return () => sub.subscription.unsubscribe();
+    supabase.auth.getSession().then(({ data: { session: sess } }) => {
+      void applySession(sess);
+    });
+
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
   }, []);
 
   async function signOut() {
