@@ -1,0 +1,1 @@
+DELETE FROM public.product_images WHERE id = '6a2ae868-4f8e-4aa5-8cd1-599c490f2bda';
