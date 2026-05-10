@@ -6,6 +6,7 @@ import wrenchImg from "@/assets/wrench.jpg";
 import axeImg from "@/assets/axe.jpg";
 import giftBoxImg from "@/assets/gift-box.jpg";
 import { supabase } from "@/integrations/supabase/client";
+import { MediaSlots } from "@/components/MediaSlots";
 
 export const Route = createFileRoute("/shop-the-kit")({
   validateSearch: z.object({ auto_kit: z.string().optional() }),
@@ -119,7 +120,7 @@ function ShopTheKit() {
   const [box, setBox] = useState(false);
   const [preview, setPreview] = useState<ToolId | null>(null);
   const [lightbox, setLightbox] = useState<string | null>(null);
-  const [drawer, setDrawer] = useState<ToolId | null>(null);
+  const [drawer, setDrawer] = useState<ToolId | "gift" | null>(null);
   const [cartState, setCartState] = useState<"idle" | "adding" | "added">("idle");
   const cartTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -249,7 +250,7 @@ function ShopTheKit() {
   }, [drawer, lightbox]);
 
   const previewProduct = preview ? products.find((p) => p.id === preview) : null;
-  const drawerProduct = drawer ? products.find((p) => p.id === drawer) : null;
+  const drawerProduct = drawer && drawer !== "gift" ? products.find((p) => p.id === drawer) : null;
 
   const ctaLabel =
     cartState === "adding"
@@ -357,6 +358,13 @@ function ShopTheKit() {
                   Elite Magnetic Gift Box
                   <small>Premium clamshell case · EVA foam inlays · S72 Field Guide</small>
                 </div>
+                <button
+                  type="button"
+                  className="kit-card__details"
+                  onClick={(e) => { e.stopPropagation(); setDrawer("gift"); }}
+                >
+                  View Details ›
+                </button>
               </div>
               <div className="gift-row__price">+ ${BOX_PRICE}</div>
               {!allThree && (
@@ -424,46 +432,46 @@ function ShopTheKit() {
                 <small>{drawerProduct.module}</small>
                 <h3>{drawerProduct.name}</h3>
               </div>
-              <button
-                className="drawer__close"
-                onClick={() => setDrawer(null)}
-                aria-label="Close"
-                type="button"
-              >
-                ✕
-              </button>
+              <button className="drawer__close" onClick={() => setDrawer(null)} aria-label="Close" type="button">✕</button>
             </div>
             <div className="drawer__body">
-              <div className="drawer__section-title">Photo Gallery</div>
-              <div className="drawer__gallery">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="drawer__slot">
-                    Upload via Shopify Files then paste here
-                  </div>
-                ))}
-              </div>
-
-              <div className="drawer__section-title">Video</div>
-              <div className="drawer__videos">
-                {Array.from({ length: 2 }).map((_, i) => (
-                  <div key={i} className="drawer__video-slot">
-                    <span>▶</span>
-                    Paste &lt;video&gt; or YouTube iframe here
-                  </div>
-                ))}
-              </div>
-
-              <div className="drawer__section-title">Specifications</div>
+              <MediaSlots productId={drawerProduct.id} />
+              <div className="drawer__section-title" style={{ marginTop: 28 }}>Specifications</div>
               <table className="specs-table">
                 <tbody>
                   {drawerProduct.specs.map(([k, v]: [string, string]) => (
-                    <tr key={k}>
-                      <th>{k}</th>
-                      <td>{v}</td>
-                    </tr>
+                    <tr key={k}><th>{k}</th><td>{v}</td></tr>
                   ))}
                 </tbody>
               </table>
+            </div>
+          </>
+        )}
+        {drawer === "gift" && (
+          <>
+            <div className="drawer__head">
+              <div>
+                <small>The Ultimate Gift</small>
+                <h3>Elite Magnetic Gift Box</h3>
+              </div>
+              <button className="drawer__close" onClick={() => setDrawer(null)} aria-label="Close" type="button">✕</button>
+            </div>
+            <div className="drawer__body">
+              <MediaSlots productId="gift-box" />
+              <div className="drawer__section-title" style={{ marginTop: 28 }}>Specifications</div>
+              <table className="specs-table">
+                <tbody>
+                  <tr><th>Material</th><td>2mm gray board + magnetic closure</td></tr>
+                  <tr><th>Interior</th><td>High-density EVA foam, black suede lining</td></tr>
+                  <tr><th>Dimensions</th><td>18 × 14 × 4 cm</td></tr>
+                  <tr><th>Weight</th><td>~185 g</td></tr>
+                  <tr><th>Closure</th><td>Hidden magnetic clasp</td></tr>
+                  <tr><th>Includes</th><td>Gift box, EVA inlay, 24-page Field Guide</td></tr>
+                </tbody>
+              </table>
+              <div style={{ marginTop: 24, textAlign: "center" }}>
+                <a href="/products/gift-box" className="s72-btn s72-btn--outline">Open standalone page →</a>
+              </div>
             </div>
           </>
         )}

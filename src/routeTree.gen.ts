@@ -10,15 +10,22 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WholesaleRouteImport } from './routes/wholesale'
+import { Route as WarrantyRouteImport } from './routes/warranty'
+import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as ShopTheKitRouteImport } from './routes/shop-the-kit'
+import { Route as ShippingPolicyRouteImport } from './routes/shipping-policy'
 import { Route as ReturnPolicyRouteImport } from './routes/return-policy'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as OurPromiseRouteImport } from './routes/our-promise'
+import { Route as MilitaryDiscountRouteImport } from './routes/military-discount'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CorporatePartnershipsRouteImport } from './routes/corporate-partnerships'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CancellationPolicyRouteImport } from './routes/cancellation-policy'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProductsGiftBoxRouteImport } from './routes/products.gift-box'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 import { Route as AdminProductsIdRouteImport } from './routes/admin.products.$id'
 
@@ -27,9 +34,24 @@ const WholesaleRoute = WholesaleRouteImport.update({
   path: '/wholesale',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WarrantyRoute = WarrantyRouteImport.update({
+  id: '/warranty',
+  path: '/warranty',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
+  id: '/terms-of-service',
+  path: '/terms-of-service',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShopTheKitRoute = ShopTheKitRouteImport.update({
   id: '/shop-the-kit',
   path: '/shop-the-kit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShippingPolicyRoute = ShippingPolicyRouteImport.update({
+  id: '/shipping-policy',
+  path: '/shipping-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReturnPolicyRoute = ReturnPolicyRouteImport.update({
@@ -37,9 +59,19 @@ const ReturnPolicyRoute = ReturnPolicyRouteImport.update({
   path: '/return-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OurPromiseRoute = OurPromiseRouteImport.update({
   id: '/our-promise',
   path: '/our-promise',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MilitaryDiscountRoute = MilitaryDiscountRouteImport.update({
+  id: '/military-discount',
+  path: '/military-discount',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -57,6 +89,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CancellationPolicyRoute = CancellationPolicyRouteImport.update({
+  id: '/cancellation-policy',
+  path: '/cancellation-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -70,6 +107,11 @@ const AboutRoute = AboutRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsGiftBoxRoute = ProductsGiftBoxRouteImport.update({
+  id: '/products/gift-box',
+  path: '/products/gift-box',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsSlugRoute = ProductsSlugRouteImport.update({
@@ -87,28 +129,42 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/cancellation-policy': typeof CancellationPolicyRoute
   '/contact': typeof ContactRoute
   '/corporate-partnerships': typeof CorporatePartnershipsRoute
   '/login': typeof LoginRoute
+  '/military-discount': typeof MilitaryDiscountRoute
   '/our-promise': typeof OurPromiseRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/return-policy': typeof ReturnPolicyRoute
+  '/shipping-policy': typeof ShippingPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
+  '/warranty': typeof WarrantyRoute
   '/wholesale': typeof WholesaleRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/products/gift-box': typeof ProductsGiftBoxRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/cancellation-policy': typeof CancellationPolicyRoute
   '/contact': typeof ContactRoute
   '/corporate-partnerships': typeof CorporatePartnershipsRoute
   '/login': typeof LoginRoute
+  '/military-discount': typeof MilitaryDiscountRoute
   '/our-promise': typeof OurPromiseRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/return-policy': typeof ReturnPolicyRoute
+  '/shipping-policy': typeof ShippingPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
+  '/warranty': typeof WarrantyRoute
   '/wholesale': typeof WholesaleRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/products/gift-box': typeof ProductsGiftBoxRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
 }
 export interface FileRoutesById {
@@ -116,14 +172,21 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/cancellation-policy': typeof CancellationPolicyRoute
   '/contact': typeof ContactRoute
   '/corporate-partnerships': typeof CorporatePartnershipsRoute
   '/login': typeof LoginRoute
+  '/military-discount': typeof MilitaryDiscountRoute
   '/our-promise': typeof OurPromiseRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/return-policy': typeof ReturnPolicyRoute
+  '/shipping-policy': typeof ShippingPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
+  '/warranty': typeof WarrantyRoute
   '/wholesale': typeof WholesaleRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/products/gift-box': typeof ProductsGiftBoxRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
 }
 export interface FileRouteTypes {
@@ -132,42 +195,63 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/cancellation-policy'
     | '/contact'
     | '/corporate-partnerships'
     | '/login'
+    | '/military-discount'
     | '/our-promise'
+    | '/privacy-policy'
     | '/return-policy'
+    | '/shipping-policy'
     | '/shop-the-kit'
+    | '/terms-of-service'
+    | '/warranty'
     | '/wholesale'
     | '/products/$slug'
+    | '/products/gift-box'
     | '/admin/products/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/admin'
+    | '/cancellation-policy'
     | '/contact'
     | '/corporate-partnerships'
     | '/login'
+    | '/military-discount'
     | '/our-promise'
+    | '/privacy-policy'
     | '/return-policy'
+    | '/shipping-policy'
     | '/shop-the-kit'
+    | '/terms-of-service'
+    | '/warranty'
     | '/wholesale'
     | '/products/$slug'
+    | '/products/gift-box'
     | '/admin/products/$id'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/admin'
+    | '/cancellation-policy'
     | '/contact'
     | '/corporate-partnerships'
     | '/login'
+    | '/military-discount'
     | '/our-promise'
+    | '/privacy-policy'
     | '/return-policy'
+    | '/shipping-policy'
     | '/shop-the-kit'
+    | '/terms-of-service'
+    | '/warranty'
     | '/wholesale'
     | '/products/$slug'
+    | '/products/gift-box'
     | '/admin/products/$id'
   fileRoutesById: FileRoutesById
 }
@@ -175,14 +259,21 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
+  CancellationPolicyRoute: typeof CancellationPolicyRoute
   ContactRoute: typeof ContactRoute
   CorporatePartnershipsRoute: typeof CorporatePartnershipsRoute
   LoginRoute: typeof LoginRoute
+  MilitaryDiscountRoute: typeof MilitaryDiscountRoute
   OurPromiseRoute: typeof OurPromiseRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ReturnPolicyRoute: typeof ReturnPolicyRoute
+  ShippingPolicyRoute: typeof ShippingPolicyRoute
   ShopTheKitRoute: typeof ShopTheKitRoute
+  TermsOfServiceRoute: typeof TermsOfServiceRoute
+  WarrantyRoute: typeof WarrantyRoute
   WholesaleRoute: typeof WholesaleRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
+  ProductsGiftBoxRoute: typeof ProductsGiftBoxRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -194,11 +285,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WholesaleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/warranty': {
+      id: '/warranty'
+      path: '/warranty'
+      fullPath: '/warranty'
+      preLoaderRoute: typeof WarrantyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms-of-service': {
+      id: '/terms-of-service'
+      path: '/terms-of-service'
+      fullPath: '/terms-of-service'
+      preLoaderRoute: typeof TermsOfServiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shop-the-kit': {
       id: '/shop-the-kit'
       path: '/shop-the-kit'
       fullPath: '/shop-the-kit'
       preLoaderRoute: typeof ShopTheKitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shipping-policy': {
+      id: '/shipping-policy'
+      path: '/shipping-policy'
+      fullPath: '/shipping-policy'
+      preLoaderRoute: typeof ShippingPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/return-policy': {
@@ -208,11 +320,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReturnPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/our-promise': {
       id: '/our-promise'
       path: '/our-promise'
       fullPath: '/our-promise'
       preLoaderRoute: typeof OurPromiseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/military-discount': {
+      id: '/military-discount'
+      path: '/military-discount'
+      fullPath: '/military-discount'
+      preLoaderRoute: typeof MilitaryDiscountRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -236,6 +362,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cancellation-policy': {
+      id: '/cancellation-policy'
+      path: '/cancellation-policy'
+      fullPath: '/cancellation-policy'
+      preLoaderRoute: typeof CancellationPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -255,6 +388,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products/gift-box': {
+      id: '/products/gift-box'
+      path: '/products/gift-box'
+      fullPath: '/products/gift-box'
+      preLoaderRoute: typeof ProductsGiftBoxRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products/$slug': {
@@ -288,14 +428,21 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
+  CancellationPolicyRoute: CancellationPolicyRoute,
   ContactRoute: ContactRoute,
   CorporatePartnershipsRoute: CorporatePartnershipsRoute,
   LoginRoute: LoginRoute,
+  MilitaryDiscountRoute: MilitaryDiscountRoute,
   OurPromiseRoute: OurPromiseRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
   ReturnPolicyRoute: ReturnPolicyRoute,
+  ShippingPolicyRoute: ShippingPolicyRoute,
   ShopTheKitRoute: ShopTheKitRoute,
+  TermsOfServiceRoute: TermsOfServiceRoute,
+  WarrantyRoute: WarrantyRoute,
   WholesaleRoute: WholesaleRoute,
   ProductsSlugRoute: ProductsSlugRoute,
+  ProductsGiftBoxRoute: ProductsGiftBoxRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

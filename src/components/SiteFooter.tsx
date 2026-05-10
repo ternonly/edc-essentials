@@ -22,7 +22,9 @@ export function SiteFooter() {
           <ul>
             <li><Link to="/shop-the-kit">Shop the Kit</Link></li>
             <li><Link to="/shop-the-kit" search={{ auto_kit: "elite" }}>Elite Gift Set</Link></li>
-            <li><Link to="/wholesale">Corporate & Government Procurement</Link></li>
+            <li><Link to="/products/gift-box">Gift Box</Link></li>
+            <li><Link to="/wholesale">B2B & Procurement</Link></li>
+            <li><Link to="/military-discount">Military Discount</Link></li>
           </ul>
         </div>
         <div>
@@ -31,13 +33,18 @@ export function SiteFooter() {
             <li><Link to="/about">About</Link></li>
             <li><Link to="/our-promise">Our Promise</Link></li>
             <li><Link to="/corporate-partnerships">Corporate</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
           </ul>
         </div>
         <div>
           <h4>Support</h4>
           <ul>
-            <li><Link to="/contact">Contact</Link></li>
-            <li><Link to="/return-policy">Return Policy</Link></li>
+            <li><Link to="/return-policy">Returns</Link></li>
+            <li><Link to="/shipping-policy">Shipping</Link></li>
+            <li><Link to="/warranty">Warranty</Link></li>
+            <li><Link to="/cancellation-policy">Cancellation</Link></li>
+            <li><Link to="/privacy-policy">Privacy</Link></li>
+            <li><Link to="/terms-of-service">Terms</Link></li>
           </ul>
         </div>
       </div>
