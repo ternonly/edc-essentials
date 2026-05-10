@@ -21,7 +21,7 @@ function LangToggle() {
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
-  const { isAdmin } = useAuth();
+  const { isAdmin, user } = useAuth();
 
   return (
     <header className="s72-header">
@@ -32,6 +32,8 @@ export function SiteHeader() {
           <Link to="/about">About</Link>
           <Link to="/wholesale">B2B</Link>
           <Link to="/contact">Contact</Link>
+          <Link to="/track">Track</Link>
+          {user ? <Link to="/account">Account</Link> : <Link to="/login">Sign In</Link>}
           {isAdmin && <Link to="/admin">Admin</Link>}
         </nav>
         <LangToggle />
@@ -55,6 +57,8 @@ export function SiteHeader() {
           <Link to="/about" onClick={close}>About</Link>
           <Link to="/wholesale" onClick={close}>B2B</Link>
           <Link to="/contact" onClick={close}>Contact</Link>
+          <Link to="/track" onClick={close}>Track</Link>
+          {user ? <Link to="/account" onClick={close}>Account</Link> : <Link to="/login" onClick={close}>Sign In</Link>}
           {isAdmin && <Link to="/admin" onClick={close}>Admin</Link>}
         </div>
       )}

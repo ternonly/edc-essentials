@@ -10,7 +10,7 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
-  const { user, loading } = useAuth();
+  const { user, isAdmin, loading } = useAuth();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,8 +18,8 @@ function LoginPage() {
   const [msg, setMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!loading && user) navigate({ to: "/admin" });
-  }, [user, loading, navigate]);
+    if (!loading && user) navigate({ to: isAdmin ? "/admin" : "/account" });
+  }, [user, isAdmin, loading, navigate]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -30,14 +30,14 @@ function LoginPage() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: `${window.location.origin}/admin` },
+          options: { emailRedirectTo: `${window.location.origin}/account` },
         });
         if (error) throw error;
         setMsg("注册成功。如已开启邮箱验证请到邮箱激活后再登录。");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        navigate({ to: "/admin" });
+        navigate({ to: "/account" });
       }
     } catch (err: any) {
       setMsg(err.message ?? String(err));

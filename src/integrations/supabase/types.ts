@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      orders: {
+        Row: {
+          created_at: string
+          currency: string
+          email: string | null
+          id: string
+          items: Json
+          order_number: string
+          phone: string | null
+          shipping_address: Json
+          status: string
+          total: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          email?: string | null
+          id?: string
+          items?: Json
+          order_number: string
+          phone?: string | null
+          shipping_address?: Json
+          status?: string
+          total?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          email?: string | null
+          id?: string
+          items?: Json
+          order_number?: string
+          phone?: string | null
+          shipping_address?: Json
+          status?: string
+          total?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       product_assets: {
         Row: {
           created_at: string
@@ -174,6 +219,39 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          govx_verified: boolean
+          govx_verified_at: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          govx_verified?: boolean
+          govx_verified_at?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          govx_verified?: boolean
+          govx_verified_at?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       site_content: {
         Row: {
           group_key: string
@@ -197,6 +275,50 @@ export type Database = {
           value?: Json
         }
         Relationships: []
+      }
+      tracking_events: {
+        Row: {
+          created_at: string
+          id: string
+          lat: number | null
+          lng: number | null
+          location: string
+          note: string
+          occurred_at: string
+          order_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          location?: string
+          note?: string
+          occurred_at?: string
+          order_id: string
+          status: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          location?: string
+          note?: string
+          occurred_at?: string
+          order_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tracking_events_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
