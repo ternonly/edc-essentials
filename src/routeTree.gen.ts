@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WholesaleRouteImport } from './routes/wholesale'
 import { Route as WarrantyRouteImport } from './routes/warranty'
+import { Route as TrackRouteImport } from './routes/track'
 import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as ShopTheKitRouteImport } from './routes/shop-the-kit'
 import { Route as ShippingPolicyRouteImport } from './routes/shipping-policy'
@@ -38,6 +39,11 @@ const WholesaleRoute = WholesaleRouteImport.update({
 const WarrantyRoute = WarrantyRouteImport.update({
   id: '/warranty',
   path: '/warranty',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrackRoute = TrackRouteImport.update({
+  id: '/track',
+  path: '/track',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
@@ -147,6 +153,7 @@ export interface FileRoutesByFullPath {
   '/shipping-policy': typeof ShippingPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/track': typeof TrackRoute
   '/warranty': typeof WarrantyRoute
   '/wholesale': typeof WholesaleRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -169,6 +176,7 @@ export interface FileRoutesByTo {
   '/shipping-policy': typeof ShippingPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/track': typeof TrackRoute
   '/warranty': typeof WarrantyRoute
   '/wholesale': typeof WholesaleRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -192,6 +200,7 @@ export interface FileRoutesById {
   '/shipping-policy': typeof ShippingPolicyRoute
   '/shop-the-kit': typeof ShopTheKitRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/track': typeof TrackRoute
   '/warranty': typeof WarrantyRoute
   '/wholesale': typeof WholesaleRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -216,6 +225,7 @@ export interface FileRouteTypes {
     | '/shipping-policy'
     | '/shop-the-kit'
     | '/terms-of-service'
+    | '/track'
     | '/warranty'
     | '/wholesale'
     | '/products/$slug'
@@ -238,6 +248,7 @@ export interface FileRouteTypes {
     | '/shipping-policy'
     | '/shop-the-kit'
     | '/terms-of-service'
+    | '/track'
     | '/warranty'
     | '/wholesale'
     | '/products/$slug'
@@ -260,6 +271,7 @@ export interface FileRouteTypes {
     | '/shipping-policy'
     | '/shop-the-kit'
     | '/terms-of-service'
+    | '/track'
     | '/warranty'
     | '/wholesale'
     | '/products/$slug'
@@ -283,6 +295,7 @@ export interface RootRouteChildren {
   ShippingPolicyRoute: typeof ShippingPolicyRoute
   ShopTheKitRoute: typeof ShopTheKitRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
+  TrackRoute: typeof TrackRoute
   WarrantyRoute: typeof WarrantyRoute
   WholesaleRoute: typeof WholesaleRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
@@ -303,6 +316,13 @@ declare module '@tanstack/react-router' {
       path: '/warranty'
       fullPath: '/warranty'
       preLoaderRoute: typeof WarrantyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/track': {
+      id: '/track'
+      path: '/track'
+      fullPath: '/track'
+      preLoaderRoute: typeof TrackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms-of-service': {
@@ -460,6 +480,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShippingPolicyRoute: ShippingPolicyRoute,
   ShopTheKitRoute: ShopTheKitRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
+  TrackRoute: TrackRoute,
   WarrantyRoute: WarrantyRoute,
   WholesaleRoute: WholesaleRoute,
   ProductsSlugRoute: ProductsSlugRoute,
