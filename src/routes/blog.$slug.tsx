@@ -19,7 +19,7 @@ type Post = {
 
 export const Route = createFileRoute("/blog/$slug")({
   head: ({ loaderData }) => {
-    const p = loaderData as Post | null;
+    const p = (loaderData as unknown) as Post | null;
     if (!p) return { meta: [{ title: "Article — Survival72™" }] };
     return {
       meta: [
