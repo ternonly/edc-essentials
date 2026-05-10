@@ -10,7 +10,7 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
-  const { user, loading } = useAuth();
+  const { user, isAdmin, loading } = useAuth();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,8 +18,8 @@ function LoginPage() {
   const [msg, setMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!loading && user) navigate({ to: "/admin" });
-  }, [user, loading, navigate]);
+    if (!loading && user) navigate({ to: isAdmin ? "/admin" : "/account" });
+  }, [user, isAdmin, loading, navigate]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
