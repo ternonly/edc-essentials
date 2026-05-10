@@ -397,14 +397,25 @@ function ShopTheKit() {
             )}
           </div>
 
-          <button
-            className="add-cart-btn"
-            disabled={selectedCount === 0 || cartState !== "idle"}
-            onClick={addToCart}
-            type="button"
-          >
-            {ctaLabel}
-          </button>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 12 }}>
+            <button
+              className="add-cart-btn"
+              disabled={selectedCount === 0 || cartState !== "idle"}
+              onClick={addToCart}
+              type="button"
+            >
+              {ctaLabel}
+            </button>
+            <button
+              className="add-cart-btn"
+              style={{ background: "#c9a96e", color: "#fff" }}
+              disabled={selectedCount === 0}
+              onClick={buyNow}
+              type="button"
+            >
+              {selectedCount === 0 ? "Select a Module" : `Buy Now — $${total.toFixed(2)}`}
+            </button>
+          </div>
         </div>
       </div>
 
