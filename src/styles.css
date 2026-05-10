@@ -1152,3 +1152,29 @@ html[dir="rtl"] .s72-feat-gift { text-align: right; }
 .policy-page .s72-prose table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
 .policy-page .s72-prose th, .policy-page .s72-prose td { border: 1px solid #eee; padding: 8px 10px; text-align: left; }
 .policy-page .s72-prose th { background: #f9f8f6; }
+
+/* ---------- RTL overrides (Arabic) ---------- */
+html[dir="rtl"] {
+  font-family: "Noto Sans Arabic", "Cairo", "Tajawal", system-ui, sans-serif;
+}
+html[dir="rtl"] body { text-align: right; }
+html[dir="rtl"] .s72-header__inner,
+html[dir="rtl"] .s72-nav,
+html[dir="rtl"] .s72-mobile-drawer { direction: rtl; }
+html[dir="rtl"] .s72-cart__badge { margin-left: 0; margin-right: 6px; }
+html[dir="rtl"] .s72-prose ul,
+html[dir="rtl"] .policy-page .s72-prose ul { padding-left: 0; padding-right: 20px; }
+html[dir="rtl"] .specs-table th,
+html[dir="rtl"] .specs-table td,
+html[dir="rtl"] .policy-page .s72-prose th,
+html[dir="rtl"] .policy-page .s72-prose td { text-align: right; }
+html[dir="rtl"] .s72-btn--gold,
+html[dir="rtl"] .s72-cta-bar { direction: rtl; }
+html[dir="rtl"] .s72-section-head,
+html[dir="rtl"] .s72-proof,
+html[dir="rtl"] .s72-promise { text-align: right; }
+html[dir="rtl"] input,
+html[dir="rtl"] textarea,
+html[dir="rtl"] select { text-align: right; }
+/* logical flips for icons that imply direction */
+html[dir="rtl"] .s72-arrow-flip { transform: scaleX(-1); }
