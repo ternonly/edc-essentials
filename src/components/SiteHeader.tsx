@@ -30,6 +30,7 @@ export function SiteHeader() {
         <nav className="s72-nav">
           <Link to="/shop-the-kit">Shop the Kit</Link>
           <Link to="/about">About</Link>
+          <Link to="/blog">Blog</Link>
           <Link to="/wholesale">B2B</Link>
           <Link to="/contact">Contact</Link>
           <Link to="/track">Track</Link>
