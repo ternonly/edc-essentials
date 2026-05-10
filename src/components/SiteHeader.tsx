@@ -41,7 +41,7 @@ function LangToggle() {
       aria-label={`Switch to ${next.toUpperCase()}`}
       title={`→ ${LANG_LABEL[next]}`}
     >
-      {LANG_LABEL[cur] ?? "EN"}
+      {LANG_LABEL[next] ?? "ع"}
     </button>
   );
 }
