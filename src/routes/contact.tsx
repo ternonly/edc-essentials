@@ -15,7 +15,7 @@ export const Route = createFileRoute("/contact")({
         title: "Contact",
         intro: "We answer every message within one business day.",
         body_md:
-          "General: **hello@survival72gear.com**\n\nSupport: **support@survival72gear.com**\n\nWholesale: **wholesale@survival72gear.com**",
+          "General: **hello@survival72gear.com**\n\nSupport: **support@survival72gear.com**\n\nProcurement: **procurement@survival72gear.com**",
       }}
     />
   ),
