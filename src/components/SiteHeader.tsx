@@ -1,7 +1,30 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/use-auth";
+
+function useCartCount() {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    const read = () => {
+      try {
+        const raw = JSON.parse(localStorage.getItem("s72_cart") || "[]");
+        setCount(Array.isArray(raw) ? raw.length : 0);
+      } catch {
+        setCount(0);
+      }
+    };
+    read();
+    const onChange = () => read();
+    window.addEventListener("storage", onChange);
+    window.addEventListener("s72-cart-changed", onChange);
+    return () => {
+      window.removeEventListener("storage", onChange);
+      window.removeEventListener("s72-cart-changed", onChange);
+    };
+  }, []);
+  return count;
+}
 
 const LANG_CYCLE: Record<string, string> = { en: "ar", ar: "zh", zh: "en" };
 const LANG_LABEL: Record<string, string> = { en: "EN", ar: "ع", zh: "中" };
