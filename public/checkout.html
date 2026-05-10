@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Survival72</title>
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <!-- PayPal -->
+  <script src="https://www.paypal.com/sdk/js?client-id=ED1ztHD-KRSJ3duN_VzEoClqKRcnuDRlSf0oBKM-wV1asowckBnrOixZoe3zDW80ND42ULU4t8T6l9TQ&currency=USD&intent=capture"
+          data-namespace="paypal_sdk"></script>
+
+  <style>
+    :root {
+      --bg: #fff; --black: #1a1a1a; --gray: #666; --light: #f9f8f6;
+      --border: #e8e8e8; --gold: #c9a96e; --red: #c0392b; --green: #27ae60;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; color: var(--black); background: var(--light); line-height: 1.6; }
+    .checkout-container { max-width: 720px; margin: 40px auto; padding: 0 20px; }
+    .checkout-title { font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 32px; letter-spacing: 1px; }
+    .step-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--gray); margin-bottom: 8px; }
+    .section { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 28px; margin-bottom: 20px; }
+    .section h3 { font-size: 16px; font-weight: 700; margin-bottom: 18px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; color: var(--gray); }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 6px;
+      font-size: 15px; font-family: inherit; transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--black); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .payment-options { display: flex; flex-direction: column; gap: 12px; }
+    .payment-card {
+      position: relative; display: flex; align-items: center; gap: 14px;
+      border: 2px solid var(--border); border-radius: 8px; padding: 18px 20px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .payment-card:hover { border-color: var(--gray); }
+    .payment-card.selected { border-color: var(--black); background: #fafafa; }
+    .payment-card.cod-highlight { border-color: var(--gold); background: #fffdf5; }
+    .payment-card input { display: none; }
+    .payment-icon { font-size: 24px; min-width: 36px; text-align: center; }
+    .payment-info { flex: 1; }
+    .payment-name { font-size: 15px; font-weight: 700; }
+    .payment-desc { font-size: 12px; color: var(--gray); margin-top: 2px; }
+    .payment-badge {
+      position: absolute; top: -10px; right: 16px; background: var(--gold); color: #fff;
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      padding: 4px 10px; border-radius: 10px;
+    }
+    .payment-extra { font-size: 12px; color: var(--red); margin-top: 4px; }
+    .summary-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
+    .summary-row.total { font-size: 18px; font-weight: 700; border-top: 2px solid var(--black); padding-top: 14px; margin-top: 10px; }
+    .btn {
+      width: 100%; padding: 16px; background: var(--black); color: #fff; border: none; border-radius: 8px;
+      font-size: 16px; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s;
+    }
+    .btn:hover { background: #333; }
+    .btn:disabled { background: #ccc; cursor: not-allowed; }
+    .btn-loading { pointer-events: none; opacity: 0.7; }
+    #paypal-button-container { margin-top: 12px; display: none; }
+    #paypal-button-container.show { display: block; }
+    .message { padding: 12px; border-radius: 6px; font-size: 13px; margin-top: 12px; display: none; }
+    .message.error { background: #fde8e8; color: var(--red); border: 1px solid #f5c6cb; display: block; }
+    .message.success { background: #e8f8f0; color: var(--green); border: 1px solid #c3e6cb; display: block; }
+    .confirmation { display: none; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 32px; text-align: center; }
+    .confirmation.show { display: block; }
+    .confirmation h2 { font-size: 22px; margin-bottom: 12px; }
+    .confirmation .check-icon { font-size: 48px; margin-bottom: 16px; }
+    .confirmation .order-details { background: var(--light); border-radius: 6px; padding: 20px; margin: 20px 0; text-align: left; font-size: 13px; line-height: 2; }
+    .confirmation .order-details strong { display: inline-block; width: 120px; color: var(--gray); }
+  </style>
+</head>
+<body>
+  <div class="checkout-container">
+    <h1 class="checkout-title">CHECKOUT</h1>
+
+    <!-- Step 1: Shipping -->
+    <div id="shipping-section">
+      <div class="step-label">Step 1 — Shipping Info</div>
+      <div class="section">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="name" required>
+          </div>
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" id="email" placeholder="you@email.com" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone *</label>
+            <input type="tel" id="phone" required>
+          </div>
+          <div class="form-group">
+            <label>Country *</label>
+            <select id="country" required>
+              <option value="">Select country</option>
+              <option value="AE">United Arab Emirates</option>
+              <option value="SA">Saudi Arabia</option>
+              <option value="KW">Kuwait</option>
+              <option value="QA">Qatar</option>
+              <option value="OM">Oman</option>
+              <option value="BH">Bahrain</option>
+              <option value="US">United States</option>
+              <option value="GB">United Kingdom</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>City *</label>
+            <input type="text" id="city" required>
+          </div>
+          <div class="form-group">
+            <label>ZIP / Postal Code</label>
+            <input type="text" id="zip">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Full Address *</label>
+          <textarea id="address" required></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Payment -->
+    <div id="payment-section">
+      <div class="step-label">Step 2 — Payment</div>
+      <div class="section">
+        <div class="payment-options">
+          <label class="payment-card cod-highlight selected" id="card-cod">
+            <input type="radio" name="payment" value="cod" checked>
+            <div class="payment-icon">🚚</div>
+            <div class="payment-info">
+              <div class="payment-name">Cash on Delivery</div>
+              <div class="payment-desc">Pay when you receive your order. UAE · Saudi Arabia · Kuwait · Qatar · Oman · Bahrain</div>
+              <div class="payment-extra">+ AED 20 COD service fee (non-refundable)</div>
+            </div>
+            <div class="payment-badge">Recommended</div>
+          </label>
+
+          <label class="payment-card" id="card-paypal">
+            <input type="radio" name="payment" value="paypal">
+            <div class="payment-icon">🅿️</div>
+            <div class="payment-info">
+              <div class="payment-name">PayPal / Credit Card</div>
+              <div class="payment-desc">Pay securely online. Visa · Mastercard · PayPal balance. Worldwide.</div>
+            </div>
+          </label>
+        </div>
+
+        <div id="paypal-button-container"></div>
+        <div id="payment-msg" class="message"></div>
+      </div>
+    </div>
+
+    <!-- Step 3: Review -->
+    <div id="summary-section">
+      <div class="step-label">Step 3 — Review</div>
+      <div class="section">
+        <div class="summary-row"><span>Subtotal</span><span id="sum-subtotal">—</span></div>
+        <div class="summary-row"><span>Shipping</span><span id="sum-shipping">—</span></div>
+        <div class="summary-row" id="sum-cod-row"><span>COD service fee</span><span id="sum-cod">—</span></div>
+        <div class="summary-row total"><span>TOTAL</span><span id="sum-total">—</span></div>
+      </div>
+    </div>
+
+    <button class="btn" id="place-order-btn">Place Order — COD</button>
+
+    <!-- Confirmation -->
+    <div class="confirmation" id="confirmation">
+      <div class="check-icon">✓</div>
+      <h2>Order Confirmed</h2>
+      <p>We've received your order. A confirmation has been sent to your email.</p>
+      <div class="order-details" id="confirm-details"></div>
+      <p style="font-size:12px;color:var(--gray)">
+        For Gulf countries: delivery in 8–12 days via Aramex COD.<br>
+        For PayPal orders: shipped within 48 hours.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    // Config — REPLACE with your values
+    // ============================================================
+    const EMAILJS_PUBLIC_KEY  = 'YOUR_EMAILJS_PUBLIC_KEY';
+    const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
+    const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+    const PAYPAL_CLIENT_ID    = 'ED1ztHD-KRSJ3duN_VzEoClqKRcnuDRlSf0oBKM-wV1asowckBnrOixZoe3zDW80ND42ULU4t8T6l9TQ';
+
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+    // ============================================================
+    // Cart — replace with real cart from localStorage / URL
+    // ============================================================
+    const cart = (function loadCart() {
+      try {
+        const raw = JSON.parse(localStorage.getItem('s72_cart') || '[]');
+        if (Array.isArray(raw) && raw.length) {
+          const items = raw.map(r => ({
+            name: r.name || 'Survival72 Kit',
+            variant: r.key || r.variantId || '',
+            qty: 1,
+            price: Number(r.price) || 0,
+          }));
+          const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
+          const shipping = subtotal >= 100 ? 0 : 9.99;
+          const codFee = 5.45; // ~AED 20
+          return { items, subtotal, shipping, codFee, total: subtotal + shipping, totalCOD: subtotal + shipping + codFee };
+        }
+      } catch (e) {}
+      // fallback demo
+      const items = [{ name: 'Survival72 Kit', variant: 'demo', qty: 1, price: 49 }];
+      const subtotal = 49, shipping = 9.99, codFee = 5.45;
+      return { items, subtotal, shipping, codFee, total: subtotal + shipping, totalCOD: subtotal + shipping + codFee };
+    })();
+
+    // ============================================================
+    // DOM refs
+    // ============================================================
+    const placeOrderBtn = document.getElementById('place-order-btn');
+    const paymentMsg    = document.getElementById('payment-msg');
+    const confirmation  = document.getElementById('confirmation');
+    const paypalContainer = document.getElementById('paypal-button-container');
+    const cardCod    = document.getElementById('card-cod');
+    const cardPaypal = document.getElementById('card-paypal');
+
+    // ============================================================
+    // Summary
+    // ============================================================
+    function updateSummary() {
+      const isCOD = document.querySelector('input[name="payment"]:checked').value === 'cod';
+      document.getElementById('sum-subtotal').textContent = '$' + cart.subtotal.toFixed(2);
+      document.getElementById('sum-shipping').textContent = cart.shipping === 0 ? 'FREE' : '$' + cart.shipping.toFixed(2);
+      document.getElementById('sum-cod-row').style.display = isCOD ? 'flex' : 'none';
+      document.getElementById('sum-cod').textContent = '$' + cart.codFee.toFixed(2);
+      document.getElementById('sum-total').textContent = '$' + (isCOD ? cart.totalCOD : cart.total).toFixed(2);
+      placeOrderBtn.style.display = isCOD ? 'block' : 'none';
+      paypalContainer.classList.toggle('show', !isCOD);
+    }
+
+    // Payment switching
+    document.querySelectorAll('input[name="payment"]').forEach(r => {
+      r.addEventListener('change', () => {
+        cardCod.classList.toggle('selected', r.value === 'cod' && r.checked);
+        cardPaypal.classList.toggle('selected', r.value === 'paypal' && r.checked);
+        updateSummary();
+      });
+    });
+
+    // ============================================================
+    // Form
+    // ============================================================
+    function getFormData() {
+      return {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        country: document.getElementById('country').value,
+        city: document.getElementById('city').value.trim(),
+        zip: document.getElementById('zip').value.trim(),
+        address: document.getElementById('address').value.trim(),
+      };
+    }
+
+    function validateForm() {
+      const d = getFormData();
+      if (!d.name || !d.email || !d.phone || !d.country || !d.city || !d.address) {
+        showMessage('Please fill in all required fields.', 'error');
+        return false;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) {
+        showMessage('Please enter a valid email address.', 'error');
+        return false;
+      }
+      return true;
+    }
+
+    function showMessage(text, type) {
+      paymentMsg.textContent = text;
+      paymentMsg.className = 'message ' + (type || '');
+    }
+    function clearMessage() {
+      paymentMsg.textContent = '';
+      paymentMsg.className = 'message';
+    }
+
+    function generateOrderId() {
+      const ts = Date.now().toString(36).toUpperCase();
+      const rand = Math.random().toString(36).substring(2, 6).toUpperCase();
+      return 'S72-' + ts + '-' + rand;
+    }
+
+    // ============================================================
+    // Email via EmailJS
+    // ============================================================
+    async function sendOrderEmail({ orderId, paymentMethod, status }) {
+      const d = getFormData();
+      const isCOD = paymentMethod === 'cod';
+      const total = isCOD ? cart.totalCOD : cart.total;
+      const itemsText = cart.items.map((it, i) =>
+        '  ' + (i + 1) + '. ' + it.name + ' (' + it.variant + ') x' + it.qty + ' — $' + it.price.toFixed(2)
+      ).join('\n');
+      const orderDate = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+      try {
+        const result = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          order_id: orderId,
+          customer_name: d.name,
+          customer_email: d.email,
+          customer_phone: d.phone,
+          customer_country: d.country,
+          customer_city: d.city,
+          customer_address: d.address,
+          customer_zip: d.zip || '—',
+          payment_method: isCOD ? 'COD (Cash on Delivery)' : 'PayPal',
+          order_status: status,
+          order_date: orderDate,
+          order_items: itemsText,
+          subtotal: '$' + cart.subtotal.toFixed(2),
+          shipping: cart.shipping === 0 ? 'FREE' : '$' + cart.shipping.toFixed(2),
+          cod_fee: isCOD ? '$' + cart.codFee.toFixed(2) : '—',
+          total: '$' + total.toFixed(2),
+        });
+        console.log('Email sent:', result.status);
+        return true;
+      } catch (err) {
+        console.error('Email send failed:', err);
+        return false;
+      }
+    }
+
+    // ============================================================
+    // Confirmation
+    // ============================================================
+    function showConfirmation(orderId, paymentMethod) {
+      const d = getFormData();
+      const isCOD = paymentMethod === 'cod';
+      const total = isCOD ? cart.totalCOD : cart.total;
+
+      document.getElementById('shipping-section').style.display = 'none';
+      document.getElementById('payment-section').style.display = 'none';
+      document.getElementById('summary-section').style.display = 'none';
+      placeOrderBtn.style.display = 'none';
+      document.querySelectorAll('.step-label').forEach(el => el.style.display = 'none');
+      document.querySelector('.checkout-title').textContent = 'ORDER CONFIRMED';
+
+      document.getElementById('confirm-details').innerHTML =
+        '<div><strong>Order ID:</strong> ' + orderId + '</div>' +
+        '<div><strong>Name:</strong> ' + d.name + '</div>' +
+        '<div><strong>Email:</strong> ' + d.email + '</div>' +
+        '<div><strong>Phone:</strong> ' + d.phone + '</div>' +
+        '<div><strong>Country:</strong> ' + d.country + '</div>' +
+        '<div><strong>City:</strong> ' + d.city + '</div>' +
+        '<div><strong>Address:</strong> ' + d.address + '</div>' +
+        '<div><strong>Payment:</strong> ' + (isCOD ? 'Cash on Delivery' : 'PayPal') + '</div>' +
+        '<div><strong>Total:</strong> $' + total.toFixed(2) + '</div>';
+
+      confirmation.classList.add('show');
+
+      const orders = JSON.parse(localStorage.getItem('s72_orders') || '[]');
+      orders.push({ orderId, paymentMethod, total, customer: d, items: cart.items, date: new Date().toISOString() });
+      localStorage.setItem('s72_orders', JSON.stringify(orders));
+    }
+
+    // ============================================================
+    // COD: Place Order
+    // ============================================================
+    placeOrderBtn.addEventListener('click', async () => {
+      if (!validateForm()) return;
+      const isCOD = document.querySelector('input[name="payment"]:checked').value === 'cod';
+      if (!isCOD) return;
+
+      placeOrderBtn.disabled = true;
+      placeOrderBtn.classList.add('btn-loading');
+      placeOrderBtn.textContent = 'Placing order...';
+      clearMessage();
+
+      const orderId = generateOrderId();
+      await sendOrderEmail({ orderId, paymentMethod: 'cod', status: 'pending — COD, fulfill via CJ Dropshipping' });
+      showConfirmation(orderId, 'cod');
+    });
+
+    // ============================================================
+    // PayPal — using SDK actions (NO secret in browser!)
+    // ============================================================
+    function renderPayPalButtons() {
+      if (typeof paypal_sdk === 'undefined') {
+        setTimeout(renderPayPalButtons, 500);
+        return;
+      }
+
+      paypal_sdk.Buttons({
+        style: { layout: 'vertical', color: 'black', shape: 'rect', label: 'pay', tagline: false },
+
+        createOrder: (data, actions) => {
+          if (!validateForm()) {
+            return Promise.reject(new Error('Please fill in all required fields.'));
+          }
+          const d = getFormData();
+          return actions.order.create({
+            intent: 'CAPTURE',
+            purchase_units: [{
+              amount: {
+                currency_code: 'USD',
+                value: cart.total.toFixed(2),
+                breakdown: {
+                  item_total: { currency_code: 'USD', value: cart.subtotal.toFixed(2) },
+                  shipping:   { currency_code: 'USD', value: cart.shipping.toFixed(2) },
+                },
+              },
+              items: cart.items.map(it => ({
+                name: it.name.substring(0, 127),
+                unit_amount: { currency_code: 'USD', value: it.price.toFixed(2) },
+                quantity: String(it.qty),
+              })),
+              shipping: {
+                name: { full_name: d.name },
+                address: {
+                  country_code: d.country === 'OTHER' ? 'US' : d.country,
+                  admin_area_2: d.city,
+                  postal_code: d.zip || '00000',
+                  address_line_1: d.address.substring(0, 300),
+                },
+              },
+            }],
+          });
+        },
+
+        onApprove: async (data, actions) => {
+          showMessage('Processing payment...', 'success');
+          try {
+            const details = await actions.order.capture();
+            if (details.status !== 'COMPLETED') throw new Error('Payment not completed.');
+            const orderId = generateOrderId();
+            await sendOrderEmail({ orderId, paymentMethod: 'paypal', status: 'confirmed — paid via PayPal, ship within 48h' });
+            showConfirmation(orderId, 'paypal');
+          } catch (err) {
+            console.error('Capture error:', err);
+            showMessage('Payment processing failed. Please contact support.', 'error');
+          }
+        },
+
+        onCancel: () => showMessage('Payment cancelled. No charges were made.', 'error'),
+        onError:  (err) => { console.error('PayPal error:', err); showMessage('Payment error. Please try a different payment method.', 'error'); },
+      }).render('#paypal-button-container');
+    }
+
+    // ============================================================
+    // Init
+    // ============================================================
+    updateSummary();
+    renderPayPalButtons();
+  </script>
+</body>
+</html>
