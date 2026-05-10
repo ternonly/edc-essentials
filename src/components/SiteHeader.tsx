@@ -57,6 +57,8 @@ export function SiteHeader() {
           <Link to="/about" onClick={close}>About</Link>
           <Link to="/wholesale" onClick={close}>B2B</Link>
           <Link to="/contact" onClick={close}>Contact</Link>
+          <Link to="/track" onClick={close}>Track</Link>
+          {user ? <Link to="/account" onClick={close}>Account</Link> : <Link to="/login" onClick={close}>Sign In</Link>}
           {isAdmin && <Link to="/admin" onClick={close}>Admin</Link>}
         </div>
       )}
