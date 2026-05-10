@@ -420,6 +420,18 @@ function ShopTheKit() {
             {selectedCount === 0 && (
               <div className="price-bar__hint">Pick a module to start your kit.</div>
             )}
+            <div
+              className="price-bar__hint"
+              style={{
+                marginTop: 8,
+                color: total >= 100 ? "#27ae60" : undefined,
+                fontWeight: total >= 100 ? 600 : undefined,
+              }}
+            >
+              {total >= 100
+                ? "✓ You've unlocked FREE shipping"
+                : `Spend $${(100 - total).toFixed(2)} more for FREE shipping (otherwise $20)`}
+            </div>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 12 }}>
