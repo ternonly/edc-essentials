@@ -107,6 +107,29 @@ function ProductDetail() {
   const current = allImages[active] ?? allImages[0];
   const embed = product.video_url ? youtubeEmbed(product.video_url) : null;
 
+  async function handleAdminUpload(files: FileList) {
+    if (!product) return;
+    setUploading(true);
+    setUploadMsg(null);
+    let order = images.length;
+    let added = 0;
+    for (const file of Array.from(files)) {
+      const ext = file.name.split(".").pop() ?? "jpg";
+      const path = `${product.slug}-media-${Date.now()}-${order}.${ext}`;
+      const { error: upErr } = await supabase.storage.from("product-images").upload(path, file, { upsert: true, contentType: file.type });
+      if (upErr) { setUploadMsg(upErr.message); continue; }
+      const { data } = supabase.storage.from("product-images").getPublicUrl(path);
+      const { data: row, error } = await supabase.from("product_images").insert({
+        product_id: product.id, image_url: data.publicUrl, alt: "", sort_order: order++,
+      }).select("id,image_url,alt,sort_order").single();
+      if (error) { setUploadMsg(error.message); continue; }
+      if (row) setImages((prev) => [...prev, row as any]);
+      added++;
+    }
+    setUploading(false);
+    if (added > 0) setUploadMsg(`✓ 已上传 ${added} 个文件`);
+  }
+
   return (
     <div style={{ maxWidth: 1200, margin: "0 auto", padding: "60px 24px" }}>
       <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1.1fr) minmax(0, 1fr)", gap: 48 }} className="pdp-grid">
