@@ -1,6 +1,22 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/use-auth";
+
+function LangToggle() {
+  const { i18n } = useTranslation();
+  const next = i18n.language?.startsWith("ar") ? "en" : "ar";
+  return (
+    <button
+      type="button"
+      className="s72-lang"
+      onClick={() => i18n.changeLanguage(next)}
+      aria-label="Toggle language"
+    >
+      {next === "ar" ? "ع" : "EN"}
+    </button>
+  );
+}
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -18,6 +34,7 @@ export function SiteHeader() {
           <Link to="/contact">Contact</Link>
           {isAdmin && <Link to="/admin">Admin</Link>}
         </nav>
+        <LangToggle />
         <Link to="/shop-the-kit" className="s72-cart">
           <span className="s72-cart-text">Cart</span>
           <span className="s72-cart__badge">0</span>

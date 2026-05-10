@@ -5,6 +5,7 @@ import { Problem } from "@/components/home/Problem";
 import { System } from "@/components/home/System";
 import { Edu } from "@/components/home/Edu";
 import { Proof } from "@/components/home/Proof";
+import { FeaturedConfigurator } from "@/components/home/FeaturedConfigurator";
 import { Promise as TrustPromise } from "@/components/home/Promise";
 
 export const Route = createFileRoute("/")({
@@ -33,6 +34,7 @@ function HomePage() {
       <System />
       <Edu />
       <Proof />
+      <FeaturedConfigurator />
       <TrustPromise />
     </>
   );

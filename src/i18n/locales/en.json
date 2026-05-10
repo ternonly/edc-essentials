@@ -1,0 +1,29 @@
+{
+  "nav": {
+    "shop": "Shop the Kit",
+    "about": "About",
+    "b2b": "B2B",
+    "contact": "Contact",
+    "admin": "Admin",
+    "cart": "Cart"
+  },
+  "hero": {
+    "line1": "BUILT FOR THE",
+    "line2": "72 HOURS THAT MATTER",
+    "subtitle": "Professional-grade modular tools. Carry confidence, not clutter.",
+    "cta": "Shop the Kit"
+  },
+  "configurator": {
+    "kicker": "Configure your kit",
+    "title": "Three Modules. One Decision.",
+    "subtitle": "Pick the modules that match your day. Save more as you add.",
+    "pliers": "Precision Pliers",
+    "wrench": "Roadside Wrench",
+    "axe": "Breacher Axe",
+    "total": "KIT TOTAL",
+    "save": "YOU SAVE",
+    "select": "Select a Module",
+    "addToCart": "Add to Cart",
+    "openFull": "Open Full Configurator →"
+  }
+}
