@@ -213,7 +213,7 @@
             price: Number(r.price) || 0,
           }));
           const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
-          const shipping = subtotal >= 100 ? 0 : 9.99;
+          const shipping = subtotal >= 100 ? 0 : 20;
           const codFee = 5.45; // ~AED 20
           return { items, subtotal, shipping, codFee, total: subtotal + shipping, totalCOD: subtotal + shipping + codFee };
         }
