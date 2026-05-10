@@ -14,7 +14,7 @@ export function SiteHeader() {
         <nav className="s72-nav">
           <Link to="/shop-the-kit">Shop the Kit</Link>
           <Link to="/about">About</Link>
-          <Link to="/wholesale">Corporate & Government Procurement</Link>
+          <Link to="/wholesale">B2B</Link>
           <Link to="/contact">Contact</Link>
           {isAdmin && <Link to="/admin">Admin</Link>}
         </nav>
@@ -36,7 +36,7 @@ export function SiteHeader() {
         <div className="s72-mobile-drawer">
           <Link to="/shop-the-kit" onClick={close}>Shop the Kit</Link>
           <Link to="/about" onClick={close}>About</Link>
-          <Link to="/wholesale" onClick={close}>Corporate & Government Procurement</Link>
+          <Link to="/wholesale" onClick={close}>B2B</Link>
           <Link to="/contact" onClick={close}>Contact</Link>
           {isAdmin && <Link to="/admin" onClick={close}>Admin</Link>}
         </div>
