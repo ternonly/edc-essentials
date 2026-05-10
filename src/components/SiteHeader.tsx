@@ -68,10 +68,10 @@ export function SiteHeader() {
           {isAdmin && <Link to="/admin">{t("nav.admin")}</Link>}
         </nav>
         <LangToggle />
-        <Link to="/shop-the-kit" className="s72-cart">
+        <a href={cartCount > 0 ? "/checkout.html" : "/shop-the-kit"} className="s72-cart">
           <span className="s72-cart-text">{t("nav.cart")}</span>
-          <span className="s72-cart__badge">0</span>
-        </Link>
+          <span className="s72-cart__badge">{cartCount}</span>
+        </a>
         <button
           aria-label="Open menu"
           className="s72-hamburger"
