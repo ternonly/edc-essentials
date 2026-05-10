@@ -1,7 +1,30 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/use-auth";
+
+function useCartCount() {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    const read = () => {
+      try {
+        const raw = JSON.parse(localStorage.getItem("s72_cart") || "[]");
+        setCount(Array.isArray(raw) ? raw.length : 0);
+      } catch {
+        setCount(0);
+      }
+    };
+    read();
+    const onChange = () => read();
+    window.addEventListener("storage", onChange);
+    window.addEventListener("s72-cart-changed", onChange);
+    return () => {
+      window.removeEventListener("storage", onChange);
+      window.removeEventListener("s72-cart-changed", onChange);
+    };
+  }, []);
+  return count;
+}
 
 const LANG_CYCLE: Record<string, string> = { en: "ar", ar: "zh", zh: "en" };
 const LANG_LABEL: Record<string, string> = { en: "EN", ar: "ع", zh: "中" };
@@ -28,6 +51,7 @@ export function SiteHeader() {
   const close = () => setOpen(false);
   const { isAdmin, user } = useAuth();
   const { t } = useTranslation();
+  const cartCount = useCartCount();
 
   return (
     <header className="s72-header">
@@ -44,10 +68,10 @@ export function SiteHeader() {
           {isAdmin && <Link to="/admin">{t("nav.admin")}</Link>}
         </nav>
         <LangToggle />
-        <Link to="/shop-the-kit" className="s72-cart">
+        <a href={cartCount > 0 ? "/checkout.html" : "/shop-the-kit"} className="s72-cart">
           <span className="s72-cart-text">{t("nav.cart")}</span>
-          <span className="s72-cart__badge">0</span>
-        </Link>
+          <span className="s72-cart__badge">{cartCount}</span>
+        </a>
         <button
           aria-label="Open menu"
           className="s72-hamburger"

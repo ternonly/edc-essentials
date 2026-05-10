@@ -192,9 +192,9 @@
     // ============================================================
     // Config — REPLACE with your values
     // ============================================================
-    const EMAILJS_PUBLIC_KEY  = 'YOUR_EMAILJS_PUBLIC_KEY';
-    const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
-    const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+    const EMAILJS_PUBLIC_KEY  = 'kE_C2yvhIiGwbWrfi';
+    const EMAILJS_SERVICE_ID  = 'service_10n6x82';
+    const EMAILJS_TEMPLATE_ID = 'template_vaurxjh';
     const PAYPAL_CLIENT_ID    = 'ED1ztHD-KRSJ3duN_VzEoClqKRcnuDRlSf0oBKM-wV1asowckBnrOixZoe3zDW80ND42ULU4t8T6l9TQ';
 
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
@@ -370,6 +370,10 @@
       const orders = JSON.parse(localStorage.getItem('s72_orders') || '[]');
       orders.push({ orderId, paymentMethod, total, customer: d, items: cart.items, date: new Date().toISOString() });
       localStorage.setItem('s72_orders', JSON.stringify(orders));
+
+      // Clear cart after successful order
+      localStorage.removeItem('s72_cart');
+      try { window.dispatchEvent(new Event('s72-cart-changed')); } catch (e) {}
     }
 
     // ============================================================

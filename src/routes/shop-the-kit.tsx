@@ -209,6 +209,7 @@ function ShopTheKit() {
       const cart = JSON.parse(localStorage.getItem("s72_cart") ?? "[]");
       cart.push({ variantId: variant.id, price: variant.price, key: variantKey, ts: Date.now() });
       localStorage.setItem("s72_cart", JSON.stringify(cart));
+      window.dispatchEvent(new Event("s72-cart-changed"));
     } catch {
       /* noop */
     }
