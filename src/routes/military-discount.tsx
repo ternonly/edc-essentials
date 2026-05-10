@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { DynamicPage } from "@/components/DynamicPage";
 
 export const Route = createFileRoute("/military-discount")({
