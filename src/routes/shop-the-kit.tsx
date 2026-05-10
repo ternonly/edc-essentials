@@ -203,11 +203,32 @@ function ShopTheKit() {
     setMode("build");
   }
 
+  function buildLineItems() {
+    if (!variant) return [];
+    const lines: { name: string; variantId: string; price: number; key: string; ts: number }[] = [];
+    const ts = Date.now();
+    // Push one entry per selected module so checkout shows real product names
+    products.forEach((p) => {
+      if (selected[p.id]) {
+        lines.push({ name: `${p.module} — ${p.name}`, variantId: p.id, price: p.price, key: p.id, ts });
+      }
+    });
+    if (box) {
+      lines.push({ name: "Elite Magnetic Gift Box", variantId: "gift-box", price: BOX_PRICE, key: "gift-box", ts });
+    }
+    // Apply combo discount as a negative line so total matches the configurator price
+    if (discount > 0) {
+      lines.push({ name: `Bundle discount (${selectedCount} modules)`, variantId: "discount", price: -discount, key: "discount", ts });
+    }
+    return lines;
+  }
+
   function writeCart() {
-    if (!variant) return;
+    const lines = buildLineItems();
+    if (!lines.length) return;
     try {
       const cart = JSON.parse(localStorage.getItem("s72_cart") ?? "[]");
-      cart.push({ variantId: variant.id, price: variant.price, key: variantKey, ts: Date.now() });
+      cart.push(...lines);
       localStorage.setItem("s72_cart", JSON.stringify(cart));
       window.dispatchEvent(new Event("s72-cart-changed"));
     } catch {
@@ -227,6 +248,9 @@ function ShopTheKit() {
     } finally {
       writeCart();
       setCartState("added");
+      // Reset selection so user can build another sub-kit and add again
+      setSelected({ pliers: false, wrench: false, axe: false });
+      setBox(false);
       if (cartTimer.current) clearTimeout(cartTimer.current);
       cartTimer.current = setTimeout(() => setCartState("idle"), 2000);
     }
