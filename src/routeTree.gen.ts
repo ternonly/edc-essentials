@@ -20,6 +20,7 @@ import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as OurPromiseRouteImport } from './routes/our-promise'
 import { Route as MilitaryDiscountRouteImport } from './routes/military-discount'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as GovxVerifyRouteImport } from './routes/govx-verify'
 import { Route as CorporatePartnershipsRouteImport } from './routes/corporate-partnerships'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CancellationPolicyRouteImport } from './routes/cancellation-policy'
@@ -88,6 +89,11 @@ const MilitaryDiscountRoute = MilitaryDiscountRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GovxVerifyRoute = GovxVerifyRouteImport.update({
+  id: '/govx-verify',
+  path: '/govx-verify',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CorporatePartnershipsRoute = CorporatePartnershipsRouteImport.update({
@@ -169,6 +175,7 @@ export interface FileRoutesByFullPath {
   '/cancellation-policy': typeof CancellationPolicyRoute
   '/contact': typeof ContactRoute
   '/corporate-partnerships': typeof CorporatePartnershipsRoute
+  '/govx-verify': typeof GovxVerifyRoute
   '/login': typeof LoginRoute
   '/military-discount': typeof MilitaryDiscountRoute
   '/our-promise': typeof OurPromiseRoute
@@ -196,6 +203,7 @@ export interface FileRoutesByTo {
   '/cancellation-policy': typeof CancellationPolicyRoute
   '/contact': typeof ContactRoute
   '/corporate-partnerships': typeof CorporatePartnershipsRoute
+  '/govx-verify': typeof GovxVerifyRoute
   '/login': typeof LoginRoute
   '/military-discount': typeof MilitaryDiscountRoute
   '/our-promise': typeof OurPromiseRoute
@@ -224,6 +232,7 @@ export interface FileRoutesById {
   '/cancellation-policy': typeof CancellationPolicyRoute
   '/contact': typeof ContactRoute
   '/corporate-partnerships': typeof CorporatePartnershipsRoute
+  '/govx-verify': typeof GovxVerifyRoute
   '/login': typeof LoginRoute
   '/military-discount': typeof MilitaryDiscountRoute
   '/our-promise': typeof OurPromiseRoute
@@ -253,6 +262,7 @@ export interface FileRouteTypes {
     | '/cancellation-policy'
     | '/contact'
     | '/corporate-partnerships'
+    | '/govx-verify'
     | '/login'
     | '/military-discount'
     | '/our-promise'
@@ -280,6 +290,7 @@ export interface FileRouteTypes {
     | '/cancellation-policy'
     | '/contact'
     | '/corporate-partnerships'
+    | '/govx-verify'
     | '/login'
     | '/military-discount'
     | '/our-promise'
@@ -307,6 +318,7 @@ export interface FileRouteTypes {
     | '/cancellation-policy'
     | '/contact'
     | '/corporate-partnerships'
+    | '/govx-verify'
     | '/login'
     | '/military-discount'
     | '/our-promise'
@@ -335,6 +347,7 @@ export interface RootRouteChildren {
   CancellationPolicyRoute: typeof CancellationPolicyRoute
   ContactRoute: typeof ContactRoute
   CorporatePartnershipsRoute: typeof CorporatePartnershipsRoute
+  GovxVerifyRoute: typeof GovxVerifyRoute
   LoginRoute: typeof LoginRoute
   MilitaryDiscountRoute: typeof MilitaryDiscountRoute
   OurPromiseRoute: typeof OurPromiseRoute
@@ -429,6 +442,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/govx-verify': {
+      id: '/govx-verify'
+      path: '/govx-verify'
+      fullPath: '/govx-verify'
+      preLoaderRoute: typeof GovxVerifyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/corporate-partnerships': {
@@ -562,6 +582,7 @@ const rootRouteChildren: RootRouteChildren = {
   CancellationPolicyRoute: CancellationPolicyRoute,
   ContactRoute: ContactRoute,
   CorporatePartnershipsRoute: CorporatePartnershipsRoute,
+  GovxVerifyRoute: GovxVerifyRoute,
   LoginRoute: LoginRoute,
   MilitaryDiscountRoute: MilitaryDiscountRoute,
   OurPromiseRoute: OurPromiseRoute,

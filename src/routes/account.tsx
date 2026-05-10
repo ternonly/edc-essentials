@@ -103,6 +103,24 @@ function AccountPage() {
         </form>
       </section>
 
+      <section style={{ ...card, background: profile?.govx_verified ? "#f6f3ec" : "#111", color: profile?.govx_verified ? "#111" : "#fff" }}>
+        <h2 style={h2}>GOVX ID — Service Discount</h2>
+        {profile?.govx_verified ? (
+          <p style={{ margin: 0 }}>
+            ✓ Verified. Use code <strong style={{ color: "#C9A96E" }}>GOVX10</strong> at checkout for 10% off every order.
+          </p>
+        ) : (
+          <>
+            <p style={{ margin: "0 0 16px", opacity: 0.85 }}>
+              Active military, veterans, law enforcement, firefighters, and EMS get 10% off. Verify with GOVX ID in 60 seconds.
+            </p>
+            <Link to="/govx-verify" style={{ ...btn, background: "#C9A96E", color: "#111", textDecoration: "none", display: "inline-block" }}>
+              Verify with GOVX ID →
+            </Link>
+          </>
+        )}
+      </section>
+
       <section style={card}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
           <h2 style={h2}>My Orders</h2>
