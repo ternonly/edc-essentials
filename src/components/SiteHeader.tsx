@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/use-auth";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 function useCartCount() {
   const [count, setCount] = useState(0);
@@ -67,6 +68,7 @@ export function SiteHeader() {
           {user ? <Link to="/account">{t("nav.account")}</Link> : <Link to="/login">{t("nav.signin")}</Link>}
           {isAdmin && <Link to="/admin">{t("nav.admin")}</Link>}
         </nav>
+        <ThemeToggle />
         <LangToggle />
         <Link to="/cart" className="s72-cart">
           <span className="s72-cart-text">{t("nav.cart")}</span>
