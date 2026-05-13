@@ -24,6 +24,7 @@ export const Route = createFileRoute("/cart")({
     meta: [
       { title: "Your Cart — Survival72™" },
       { name: "description", content: "Review your selected modules and proceed to checkout." },
+      { name: "robots", content: "noindex,follow" },
     ],
   }),
   component: CartPage,
