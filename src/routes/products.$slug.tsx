@@ -130,8 +130,46 @@ function ProductDetail() {
     if (added > 0) setUploadMsg(`✓ 已上传 ${added} 个文件`);
   }
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description?.replace(/[#*_`>\-]/g, "").slice(0, 300) || product.name,
+    image: allImages.map((i) => i.image_url).filter(Boolean),
+    sku: product.slug,
+    brand: { "@type": "Brand", name: "Survival72" },
+    offers: {
+      "@type": "Offer",
+      url: `https://survival72hour.com/products/${product.slug}`,
+      priceCurrency: "USD",
+      price: Number(product.price || 0).toFixed(2),
+      availability: "https://schema.org/InStock",
+      itemCondition: "https://schema.org/NewCondition",
+    },
+    ...(reviews.length > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: (reviews.reduce((s, r) => s + (r.rating || 0), 0) / reviews.length).toFixed(1),
+            reviewCount: reviews.length,
+          },
+        }
+      : {}),
+  };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://survival72hour.com/" },
+      { "@type": "ListItem", position: 2, name: "Shop", item: "https://survival72hour.com/shop-the-kit" },
+      { "@type": "ListItem", position: 3, name: product.name, item: `https://survival72hour.com/products/${product.slug}` },
+    ],
+  };
+
   return (
     <div style={{ maxWidth: 1200, margin: "0 auto", padding: "60px 24px" }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1.1fr) minmax(0, 1fr)", gap: 48 }} className="pdp-grid">
         <div>
           <div style={{ background: "#F9F8F6", borderRadius: 8, overflow: "hidden", aspectRatio: "1/1", display: "flex", alignItems: "center", justifyContent: "center" }}>
