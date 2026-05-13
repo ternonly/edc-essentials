@@ -123,6 +123,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:title", content: "Survival72™ — Built for the 72 hours that matter" },
       { name: "twitter:description", content: "Professional-grade modular EDC tools engineered for 72-hour deployment." },
       { name: "twitter:image", content: OG_IMAGE },
+      { name: "google-site-verification", content: "iJ-6kdFbHEHYbOA-h2sqZTQvtc7gWGuxhO3cELFu0Ps" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
