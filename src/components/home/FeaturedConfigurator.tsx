@@ -40,7 +40,7 @@ export function FeaturedConfigurator() {
       <div className="s72-feat-cfg__grid">
         <div className="s72-feat-cfg__preview">
           {previewImg ? (
-            <img src={previewImg} alt="" />
+            <img src={previewImg} alt="Selected Survival72 module preview" loading="lazy" />
           ) : (
             <div className="s72-feat-cfg__hint">Hover a module to preview</div>
           )}
@@ -58,7 +58,7 @@ export function FeaturedConfigurator() {
                 onMouseLeave={() => setHover(null)}
                 onClick={() => setSel({ ...sel, [p.id]: !active })}
               >
-                <img src={p.img} alt={p.name} />
+                <img src={p.img} alt={p.name} loading="lazy" />
                 <div>
                   <div className="s72-feat-card__module">{p.module}</div>
                   <div className="s72-feat-card__name">{p.name}</div>

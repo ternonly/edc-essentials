@@ -235,7 +235,7 @@ function ProductDetail() {
                         <span style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 22, textShadow: "0 1px 4px rgba(0,0,0,0.6)", pointerEvents: "none" }}>▶</span>
                       </>
                     ) : (
-                      <img src={img.image_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      <img src={img.image_url} alt={img.alt || `${product.name} thumbnail ${i + 1}`} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     )}
                   </button>
                 );
