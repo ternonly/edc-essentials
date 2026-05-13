@@ -96,6 +96,17 @@ function ProductDetail() {
     };
   }, [slug]);
 
+  const avgRating = useMemo(
+    () => (reviews.length ? reviews.reduce((s, r) => s + (r.rating || 0), 0) / reviews.length : 0),
+    [reviews]
+  );
+
+  // Toggle body padding for mobile sticky CTA
+  useEffect(() => {
+    document.body.classList.add("has-pdp-sticky");
+    return () => document.body.classList.remove("has-pdp-sticky");
+  }, []);
+
   if (loading) {
     return <div style={{ padding: 80, textAlign: "center", color: "#888" }}>Loading…</div>;
   }
@@ -107,16 +118,6 @@ function ProductDetail() {
   ];
   const current = allImages[active] ?? allImages[0];
   const embed = product.video_url ? youtubeEmbed(product.video_url) : null;
-  const avgRating = useMemo(
-    () => (reviews.length ? reviews.reduce((s, r) => s + (r.rating || 0), 0) / reviews.length : 0),
-    [reviews]
-  );
-
-  // Toggle body padding for mobile sticky CTA
-  useEffect(() => {
-    document.body.classList.add("has-pdp-sticky");
-    return () => document.body.classList.remove("has-pdp-sticky");
-  }, []);
 
   async function handleAdminUpload(files: FileList) {
     if (!product) return;
