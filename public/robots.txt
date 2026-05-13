@@ -1,6 +1,13 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /account
+Disallow: /login
 Disallow: /checkout
+Disallow: /checkout.html
 Disallow: /cart
+Disallow: /track
+Disallow: /track/
 
 Sitemap: https://survival72hour.com/sitemap.xml
