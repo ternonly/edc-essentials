@@ -1,13 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DynamicPage } from "@/components/DynamicPage";
+import { canonicalTags } from "@/lib/seo";
 
 export const Route = createFileRoute("/privacy-policy")({
-  head: () => ({
-    meta: [
-      { title: "Privacy Policy — Survival72™" },
-      { name: "description", content: "Your data, your trust. We never sell or rent customer information." },
-    ],
-  }),
+  head: () => {
+    const c = canonicalTags("/privacy-policy");
+    return {
+      meta: [
+        { title: "Privacy Policy — Survival72™" },
+        { name: "description", content: "Your data, your trust. We never sell or rent customer information." },
+        { property: "og:title", content: "Privacy Policy" },
+        { property: "og:description", content: "How Survival72 collects, uses and protects your information." },
+        ...c.meta,
+      ],
+      links: c.links,
+    };
+  },
   component: () => (
     <div className="policy-page">
       <DynamicPage

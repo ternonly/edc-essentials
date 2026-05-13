@@ -1,13 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DynamicPage } from "@/components/DynamicPage";
+import { canonicalTags } from "@/lib/seo";
 
 export const Route = createFileRoute("/corporate-partnerships")({
-  head: () => ({
-    meta: [
-      { title: "Corporate & Bespoke — Survival72™" },
-      { name: "description", content: "Corporate partnerships, custom branding, executive gifting." },
-    ],
-  }),
+  head: () => {
+    const c = canonicalTags("/corporate-partnerships");
+    return {
+      meta: [
+        { title: "Corporate & Bespoke — Survival72™" },
+        { name: "description", content: "Corporate partnerships, custom branding and executive gifting from 25 units." },
+        { property: "og:title", content: "Corporate & Bespoke" },
+        { property: "og:description", content: "Engraved handles, custom magnetic boxes and bespoke Field Guide editions." },
+        ...c.meta,
+      ],
+      links: c.links,
+    };
+  },
   component: () => (
     <DynamicPage
       slug="corporate-partnerships"

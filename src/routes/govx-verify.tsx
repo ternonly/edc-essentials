@@ -2,18 +2,27 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import { canonicalTags } from "@/lib/seo";
 
 export const Route = createFileRoute("/govx-verify")({
-  head: () => ({
-    meta: [
-      { title: "GOVX ID Verification — Survival72™" },
-      {
-        name: "description",
-        content:
-          "Verify military, law enforcement, firefighter, or EMS status with GOVX ID and unlock 10% off every order.",
-      },
-    ],
-  }),
+  head: () => {
+    const c = canonicalTags("/govx-verify");
+    return {
+      meta: [
+        { title: "GOVX ID Verification — Survival72™" },
+        {
+          name: "description",
+          content:
+            "Verify military, law enforcement, firefighter, or EMS status with GOVX ID and unlock 10% off every order.",
+        },
+        { property: "og:title", content: "GOVX ID Verification" },
+        { property: "og:description", content: "Verify service status to unlock 10% off every Survival72 order." },
+        { name: "robots", content: "noindex,follow" },
+        ...c.meta,
+      ],
+      links: c.links,
+    };
+  },
   component: GovxVerifyPage,
 });
 

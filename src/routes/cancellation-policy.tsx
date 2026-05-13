@@ -1,13 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DynamicPage } from "@/components/DynamicPage";
+import { canonicalTags } from "@/lib/seo";
 
 export const Route = createFileRoute("/cancellation-policy")({
-  head: () => ({
-    meta: [
-      { title: "Order Cancellation — Survival72™" },
-      { name: "description", content: "How and when you can cancel a Survival72 order." },
-    ],
-  }),
+  head: () => {
+    const c = canonicalTags("/cancellation-policy");
+    return {
+      meta: [
+        { title: "Order Cancellation — Survival72™" },
+        { name: "description", content: "How and when you can cancel a Survival72 order." },
+        { property: "og:title", content: "Order Cancellation" },
+        { property: "og:description", content: "Cancellation window and what happens after fulfilment starts." },
+        ...c.meta,
+      ],
+      links: c.links,
+    };
+  },
   component: () => (
     <div className="policy-page">
       <DynamicPage

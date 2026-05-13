@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { canonicalTags } from "@/lib/seo";
 
 type Post = {
   id: string;
@@ -14,14 +15,19 @@ type Post = {
 };
 
 export const Route = createFileRoute("/blog/")({
-  head: () => ({
-    meta: [
-      { title: "Field Guide — Survival72™ Blog" },
-      { name: "description", content: "EDC field guides, kit reviews, and practical 72-hour preparedness from the Survival72 team." },
-      { property: "og:title", content: "Survival72 Field Guide" },
-      { property: "og:description", content: "EDC field guides and 72-hour preparedness know-how." },
-    ],
-  }),
+  head: () => {
+    const c = canonicalTags("/blog");
+    return {
+      meta: [
+        { title: "Field Guide — Survival72™ Blog" },
+        { name: "description", content: "EDC field guides, kit reviews, and practical 72-hour preparedness from the Survival72 team." },
+        { property: "og:title", content: "Survival72 Field Guide" },
+        { property: "og:description", content: "EDC field guides and 72-hour preparedness know-how." },
+        ...c.meta,
+      ],
+      links: c.links,
+    };
+  },
   component: BlogIndex,
 });
 
