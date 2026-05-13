@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 
 export const Route = createFileRoute("/track")({
-  head: () => ({ meta: [{ title: "Track Your Order — Survival72™" }] }),
+  head: () => ({ meta: [{ title: "Track Your Order — Survival72™" }, { name: "robots", content: "noindex,follow" }] }),
   component: TrackLookup,
 });
 
