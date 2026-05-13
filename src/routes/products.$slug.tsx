@@ -246,11 +246,16 @@ function ProductDetail() {
             {product.module_label}
           </div>
           <h1 style={{ fontSize: "clamp(28px, 3.4vw, 40px)", margin: "0 0 12px" }}>{product.name}</h1>
-          <div style={{ fontSize: 28, fontWeight: 600, color: "#1A1A1A", margin: "8px 0 24px" }}>
+          {reviews.length > 0 && (
+            <a href="#reviews" style={{ display: "inline-flex", marginBottom: 14, textDecoration: "none" }}>
+              <StarRating value={avgRating} size={16} showValue count={reviews.length} />
+            </a>
+          )}
+          <div style={{ fontSize: 28, fontWeight: 600, color: "var(--foreground, #1A1A1A)", margin: "8px 0 24px" }}>
             ${Number(product.price).toFixed(2)}
           </div>
           {product.description && (
-            <div className="s72-prose" style={{ color: "#333", fontSize: 15, lineHeight: 1.8, marginBottom: 24 }}>
+            <div className="s72-prose" style={{ color: "var(--muted-foreground, #333)", fontSize: 15, lineHeight: 1.8, marginBottom: 24 }}>
               <ReactMarkdown remarkPlugins={[remarkGfm]}>{product.description}</ReactMarkdown>
             </div>
           )}
