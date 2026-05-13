@@ -30,7 +30,8 @@ export function Edu() {
             {a.image_url && (
               <img
                 src={a.image_url}
-                alt=""
+                alt={a.title}
+                loading="lazy"
                 style={{ width: "100%", aspectRatio: "16/10", objectFit: "cover", borderRadius: 6, marginBottom: 14 }}
               />
             )}

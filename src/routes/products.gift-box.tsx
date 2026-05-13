@@ -58,7 +58,7 @@ function GiftBoxPage() {
           onClick={() => setLightbox(true)}
           aria-label="Zoom image"
         >
-          <img src={hero} alt="Elite Magnetic Gift Box" />
+          <img src={hero} alt="Elite Magnetic Gift Box — clamshell case with EVA foam inlays" fetchPriority="high" />
           <span className="preview-box__zoom" aria-hidden>⤢</span>
         </button>
 
