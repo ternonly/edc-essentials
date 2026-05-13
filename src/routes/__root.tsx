@@ -71,23 +71,58 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+const SITE_URL = "https://survival72hour.com";
+const OG_IMAGE =
+  "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/161d2185-c20a-46e5-ad49-8c604286c416/id-preview-8d300e98--21a9c618-65d7-44d8-b938-b05339018cfa.lovable.app-1778398056677.png";
+
+const ORGANIZATION_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Survival72",
+  url: SITE_URL,
+  logo: `${SITE_URL}/favicon.ico`,
+  description: "Professional-grade modular EDC tools engineered for 72-hour deployment.",
+  sameAs: [],
+};
+
+const WEBSITE_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Survival72",
+  url: SITE_URL,
+  potentialAction: {
+    "@type": "SearchAction",
+    target: `${SITE_URL}/blog?q={search_term_string}`,
+    "query-input": "required name=search_term_string",
+  },
+};
+
+const CLARITY_ID = (import.meta as { env?: Record<string, string> }).env?.VITE_CLARITY_PROJECT_ID;
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Survival72™ — Built for the 72 hours that matter" },
-      { name: "description", content: "Professional-grade modular EDC tools." },
+      { name: "description", content: "Professional-grade modular EDC tools engineered for 72-hour deployment. Ships across the GCC." },
       { name: "author", content: "Survival72" },
+      { name: "robots", content: "index,follow,max-image-preview:large" },
+      { name: "theme-color", content: "#1a1a1a" },
+      { property: "og:site_name", content: "Survival72" },
       { property: "og:title", content: "Survival72™ — Built for the 72 hours that matter" },
-      { property: "og:description", content: "Professional-grade modular EDC tools." },
+      { property: "og:description", content: "Professional-grade modular EDC tools engineered for 72-hour deployment." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { property: "og:url", content: SITE_URL },
+      { property: "og:locale", content: "en_US" },
+      { property: "og:locale:alternate", content: "ar_AE" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Survival72™ — Built for the 72 hours that matter" },
-      { name: "twitter:description", content: "Professional-grade modular EDC tools." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/161d2185-c20a-46e5-ad49-8c604286c416/id-preview-8d300e98--21a9c618-65d7-44d8-b938-b05339018cfa.lovable.app-1778398056677.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/161d2185-c20a-46e5-ad49-8c604286c416/id-preview-8d300e98--21a9c618-65d7-44d8-b938-b05339018cfa.lovable.app-1778398056677.png" },
+      { name: "twitter:description", content: "Professional-grade modular EDC tools engineered for 72-hour deployment." },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -95,8 +130,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap",
       },
+      { rel: "alternate", hrefLang: "en", href: SITE_URL },
+      { rel: "alternate", hrefLang: "ar", href: `${SITE_URL}?lng=ar` },
+      { rel: "alternate", hrefLang: "x-default", href: SITE_URL },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(ORGANIZATION_JSONLD),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(WEBSITE_JSONLD),
+      },
+      ...(CLARITY_ID
+        ? [
+            {
+              children: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${CLARITY_ID}");`,
+            },
+          ]
+        : []),
     ],
   }),
   shellComponent: RootShell,
