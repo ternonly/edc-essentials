@@ -1,13 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DynamicPage } from "@/components/DynamicPage";
+import { canonicalTags } from "@/lib/seo";
 
 export const Route = createFileRoute("/wholesale")({
-  head: () => ({
-    meta: [
-      { title: "Corporate & Government Procurement — Survival72™" },
-      { name: "description", content: "B2B inquiries, corporate gifts, bulk and custom branding." },
-    ],
-  }),
+  head: () => {
+    const c = canonicalTags("/wholesale");
+    return {
+      meta: [
+        { title: "Corporate & Government Procurement — Survival72™" },
+        { name: "description", content: "B2B inquiries, corporate gifts, bulk and custom branding." },
+        { property: "og:title", content: "Corporate & Government Procurement" },
+        { property: "og:description", content: "Bulk orders, corporate gifts, and custom branding for the modular system." },
+        ...c.meta,
+      ],
+      links: c.links,
+    };
+  },
   component: () => (
     <DynamicPage
       slug="wholesale"

@@ -5,14 +5,27 @@ import remarkGfm from "remark-gfm";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { StarRating } from "@/components/StarRating";
+import { canonicalTags } from "@/lib/seo";
 
 export const Route = createFileRoute("/products/$slug")({
-  head: ({ params }) => ({
-    meta: [
-      { title: `${params.slug} — Survival72™` },
-      { name: "description", content: "Survival72 product details, gallery, specs, video and reviews." },
-    ],
-  }),
+  head: ({ params }) => {
+    const c = canonicalTags(`/products/${params.slug}`);
+    const niceName = params.slug
+      .split("-")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+    return {
+      meta: [
+        { title: `${niceName} — Survival72™` },
+        { name: "description", content: `${niceName} — Survival72 modular EDC tool. Engineered specs, gallery, video and verified reviews.` },
+        { property: "og:title", content: `${niceName} — Survival72™` },
+        { property: "og:description", content: `${niceName} — Survival72 modular EDC tool engineered for 72-hour deployment.` },
+        { property: "og:type", content: "product" },
+        ...c.meta,
+      ],
+      links: c.links,
+    };
+  },
   component: ProductDetail,
   notFoundComponent: () => (
     <div style={{ maxWidth: 720, margin: "120px auto", padding: 24, textAlign: "center" }}>

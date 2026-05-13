@@ -7,21 +7,27 @@ import axeImg from "@/assets/axe.jpg";
 import giftBoxImg from "@/assets/gift-box.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { MediaSlots } from "@/components/MediaSlots";
+import { canonicalTags } from "@/lib/seo";
 
 export const Route = createFileRoute("/shop-the-kit")({
   validateSearch: z.object({ auto_kit: z.string().optional() }),
-  head: () => ({
-    meta: [
-      { title: "Shop the Kit — Survival72™" },
-      {
-        name: "description",
-        content:
-          "Configure your Survival72 kit. Pick the modules you need, add the gift box, and check out.",
-      },
-      { property: "og:title", content: "Shop the Kit — Survival72™" },
-      { property: "og:description", content: "Build your modular EDC kit." },
-    ],
-  }),
+  head: () => {
+    const c = canonicalTags("/shop-the-kit");
+    return {
+      meta: [
+        { title: "Shop the Kit — Survival72™" },
+        {
+          name: "description",
+          content:
+            "Configure your Survival72 kit. Pick the modules you need, add the gift box, and check out.",
+        },
+        { property: "og:title", content: "Shop the Kit — Survival72™" },
+        { property: "og:description", content: "Build your modular EDC kit." },
+        ...c.meta,
+      ],
+      links: c.links,
+    };
+  },
   component: ShopTheKit,
 });
 

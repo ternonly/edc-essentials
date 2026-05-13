@@ -7,21 +7,27 @@ import { Edu } from "@/components/home/Edu";
 import { Proof } from "@/components/home/Proof";
 import { FeaturedConfigurator } from "@/components/home/FeaturedConfigurator";
 import { Promise as TrustPromise } from "@/components/home/Promise";
+import { canonicalTags } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Survival72™ — Built for the 72 hours that matter" },
-      {
-        name: "description",
-        content:
-          "Professional-grade modular EDC tools. Pliers, wrench, axe — engineered for 72-hour deployment. Ships across the GCC.",
-      },
-      { property: "og:title", content: "Survival72™ — Built for the 72 hours that matter" },
-      { property: "og:description", content: "Modular EDC tools engineered for 72-hour deployment." },
-      { property: "og:type", content: "website" },
-    ],
-  }),
+  head: () => {
+    const c = canonicalTags("/");
+    return {
+      meta: [
+        { title: "Survival72™ — Built for the 72 hours that matter" },
+        {
+          name: "description",
+          content:
+            "Professional-grade modular EDC tools. Pliers, wrench, axe — engineered for 72-hour deployment. Ships across the GCC.",
+        },
+        { property: "og:title", content: "Survival72™ — Built for the 72 hours that matter" },
+        { property: "og:description", content: "Modular EDC tools engineered for 72-hour deployment." },
+        { property: "og:type", content: "website" },
+        ...c.meta,
+      ],
+      links: c.links,
+    };
+  },
   component: HomePage,
 });
 

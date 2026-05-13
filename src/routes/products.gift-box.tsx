@@ -3,17 +3,24 @@ import { useEffect, useState } from "react";
 import giftBoxImg from "@/assets/gift-box.jpg";
 import { MediaSlots } from "@/components/MediaSlots";
 import { supabase } from "@/integrations/supabase/client";
+import { canonicalTags } from "@/lib/seo";
 
 export const Route = createFileRoute("/products/gift-box")({
-  head: () => ({
-    meta: [
-      { title: "Elite Magnetic Gift Box — Survival72™" },
-      { name: "description", content: "Premium clamshell gift packaging engineered for the Survival72 modular kit." },
-      { property: "og:title", content: "Elite Magnetic Gift Box — Survival72™" },
-      { property: "og:description", content: "2mm gray-board, hidden magnetic clasp, EVA + suede interior. + $29." },
-      { property: "og:image", content: giftBoxImg },
-    ],
-  }),
+  head: () => {
+    const c = canonicalTags("/products/gift-box");
+    return {
+      meta: [
+        { title: "Elite Magnetic Gift Box — Survival72™" },
+        { name: "description", content: "Premium clamshell gift packaging engineered for the Survival72 modular kit. Hidden magnetic clasp, EVA + suede interior." },
+        { property: "og:title", content: "Elite Magnetic Gift Box — Survival72™" },
+        { property: "og:description", content: "2mm gray-board, hidden magnetic clasp, EVA + suede interior. + $29." },
+        { property: "og:image", content: giftBoxImg },
+        { name: "twitter:image", content: giftBoxImg },
+        ...c.meta,
+      ],
+      links: c.links,
+    };
+  },
   component: GiftBoxPage,
 });
 

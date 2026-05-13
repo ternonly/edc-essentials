@@ -20,7 +20,7 @@ type Profile = {
 };
 
 export const Route = createFileRoute("/account")({
-  head: () => ({ meta: [{ title: "My Account — Survival72™" }] }),
+  head: () => ({ meta: [{ title: "My Account — Survival72™" }, { name: "robots", content: "noindex,follow" }] }),
   component: AccountPage,
 });
 

@@ -132,9 +132,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap",
       },
-      { rel: "alternate", hrefLang: "en", href: SITE_URL },
-      { rel: "alternate", hrefLang: "ar", href: `${SITE_URL}?lng=ar` },
-      { rel: "alternate", hrefLang: "x-default", href: SITE_URL },
+      // hreflang + canonical are emitted per-route via @/lib/seo
     ],
     scripts: [
       {

@@ -1,13 +1,30 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { DynamicPage } from "@/components/DynamicPage";
+import { canonicalTags, faqJsonLd } from "@/lib/seo";
+
+const FAQ = [
+  { q: "Who qualifies for the discount?", a: "Active military, veterans, law enforcement, firefighters and EMS qualify for 10% off every order." },
+  { q: "How is service status verified?", a: "Verification is handled by GOVX ID, an independent service trusted by hundreds of US-based brands. Survival72 never sees your documents." },
+  { q: "How do I redeem the discount?", a: "Once verified through GOVX ID, use code GOVX10 at checkout for 10% off." },
+];
 
 export const Route = createFileRoute("/military-discount")({
-  head: () => ({
-    meta: [
-      { title: "Military & First Responder Discount — Survival72™" },
-      { name: "description", content: "10% off for active military, law enforcement, firefighters, and EMS." },
-    ],
-  }),
+  head: () => {
+    const c = canonicalTags("/military-discount");
+    return {
+      meta: [
+        { title: "Military & First Responder Discount — Survival72™" },
+        { name: "description", content: "10% off for active military, law enforcement, firefighters, and EMS — verified via GOVX ID." },
+        { property: "og:title", content: "Military & First Responder — 10% Off" },
+        { property: "og:description", content: "Verified service discount through GOVX ID." },
+        ...c.meta,
+      ],
+      links: c.links,
+      scripts: [
+        { type: "application/ld+json", children: JSON.stringify(faqJsonLd(FAQ)) },
+      ],
+    };
+  },
   component: () => (
     <div className="policy-page">
       <DynamicPage

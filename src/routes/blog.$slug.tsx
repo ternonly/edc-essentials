@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { absUrl } from "@/lib/seo";
 
 type Post = {
   id: string;
@@ -21,6 +22,7 @@ export const Route = createFileRoute("/blog/$slug")({
   head: ({ loaderData }) => {
     const p = (loaderData as unknown) as Post | null;
     if (!p) return { meta: [{ title: "Article — Survival72™" }] };
+    const url = absUrl(`/blog/${p.slug}`);
     return {
       meta: [
         { title: `${p.title} — Survival72™` },
@@ -28,10 +30,17 @@ export const Route = createFileRoute("/blog/$slug")({
         { property: "og:title", content: p.title },
         { property: "og:description", content: p.meta_description || p.excerpt },
         { property: "og:type", content: "article" },
+        { property: "og:url", content: url },
         ...(p.cover_url ? [{ property: "og:image", content: p.cover_url }, { name: "twitter:image", content: p.cover_url }] : []),
         { name: "twitter:card", content: "summary_large_image" },
+        ...(p.published_at ? [{ property: "article:published_time", content: p.published_at }] : []),
       ],
-      links: [{ rel: "canonical", href: `/blog/${p.slug}` }],
+      links: [
+        { rel: "canonical", href: url },
+        { rel: "alternate", hrefLang: "en", href: url },
+        { rel: "alternate", hrefLang: "ar", href: `${url}?lng=ar` },
+        { rel: "alternate", hrefLang: "x-default", href: url },
+      ],
     };
   },
   loader: async ({ params }) => {
@@ -83,8 +92,14 @@ function BlogPost() {
     description: p.meta_description || p.excerpt,
     image: p.cover_url || undefined,
     datePublished: p.published_at,
+    dateModified: p.published_at,
+    mainEntityOfPage: { "@type": "WebPage", "@id": absUrl(`/blog/${p.slug}`) },
     author: { "@type": "Organization", name: p.author },
-    publisher: { "@type": "Organization", name: "Survival72" },
+    publisher: {
+      "@type": "Organization",
+      name: "Survival72",
+      logo: { "@type": "ImageObject", url: absUrl("/favicon.ico") },
+    },
   };
 
   return (

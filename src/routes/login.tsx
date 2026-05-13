@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/login")({
-  head: () => ({ meta: [{ title: "Login — Survival72™" }] }),
+  head: () => ({ meta: [{ title: "Login — Survival72™" }, { name: "robots", content: "noindex,follow" }] }),
   component: LoginPage,
 });
 

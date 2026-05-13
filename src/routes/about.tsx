@@ -1,13 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DynamicPage } from "@/components/DynamicPage";
+import { canonicalTags } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About — Survival72™" },
-      { name: "description", content: "Why Survival72 builds modular EDC tools for the 72 hours that matter." },
-    ],
-  }),
+  head: () => {
+    const c = canonicalTags("/about");
+    return {
+      meta: [
+        { title: "About — Survival72™" },
+        { name: "description", content: "Why Survival72 builds modular EDC tools for the 72 hours that matter." },
+        { property: "og:title", content: "About Survival72" },
+        { property: "og:description", content: "Why Survival72 builds modular EDC tools for the 72 hours that matter." },
+        ...c.meta,
+      ],
+      links: c.links,
+    };
+  },
   component: () => (
     <DynamicPage
       slug="about"

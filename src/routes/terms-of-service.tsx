@@ -1,13 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DynamicPage } from "@/components/DynamicPage";
+import { canonicalTags } from "@/lib/seo";
 
 export const Route = createFileRoute("/terms-of-service")({
-  head: () => ({
-    meta: [
-      { title: "Terms of Service — Survival72™" },
-      { name: "description", content: "Terms governing your purchase and use of Survival72 products." },
-    ],
-  }),
+  head: () => {
+    const c = canonicalTags("/terms-of-service");
+    return {
+      meta: [
+        { title: "Terms of Service — Survival72™" },
+        { name: "description", content: "Terms governing your purchase and use of Survival72 products." },
+        { property: "og:title", content: "Terms of Service" },
+        { property: "og:description", content: "Order acceptance, pricing, liability and governing law." },
+        ...c.meta,
+      ],
+      links: c.links,
+    };
+  },
   component: () => (
     <div className="policy-page">
       <DynamicPage

@@ -15,7 +15,7 @@ type TEvent = {
 };
 
 export const Route = createFileRoute("/track/$order")({
-  head: ({ params }) => ({ meta: [{ title: `Tracking #${params.order} — Survival72™` }] }),
+  head: ({ params }) => ({ meta: [{ title: `Tracking #${params.order} — Survival72™` }, { name: "robots", content: "noindex,follow" }] }),
   component: TrackOrder,
 });
 
