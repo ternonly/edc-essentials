@@ -310,20 +310,41 @@ function ProductDetail() {
       )}
 
       {reviews.length > 0 && (
-        <section style={{ marginTop: 80 }}>
-          <h2 style={{ fontSize: 24, marginBottom: 24 }}>What buyers say</h2>
+        <section id="reviews" style={{ marginTop: 80, scrollMarginTop: 80 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 24, flexWrap: "wrap" }}>
+            <h2 style={{ fontSize: 24, margin: 0 }}>What buyers say</h2>
+            <StarRating value={avgRating} size={18} showValue count={reviews.length} />
+          </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
             {reviews.map((r) => (
-              <article key={r.id} style={{ border: "1px solid #eee", borderRadius: 8, padding: 20, background: "#fff" }}>
-                <div style={{ color: "#C9A96E", letterSpacing: 2, marginBottom: 8 }}>{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</div>
+              <article key={r.id} style={{ border: "1px solid var(--border, #eee)", borderRadius: 8, padding: 20, background: "var(--card, #fff)" }}>
+                <div style={{ marginBottom: 8 }}>
+                  <StarRating value={r.rating} size={14} />
+                </div>
                 {r.title && <h3 style={{ fontSize: 16, margin: "0 0 8px" }}>{r.title}</h3>}
-                <p style={{ color: "#444", lineHeight: 1.7, fontSize: 14 }}>{r.body}</p>
+                <p style={{ color: "var(--muted-foreground, #444)", lineHeight: 1.7, fontSize: 14 }}>{r.body}</p>
                 <div style={{ marginTop: 12, fontWeight: 600, fontSize: 13 }}>— {r.author}</div>
               </article>
             ))}
           </div>
         </section>
       )}
+
+      {/* Mobile sticky add-to-cart */}
+      <div className="pdp-sticky-cta" role="region" aria-label="Quick add to cart">
+        <div className="pdp-sticky-cta__inner">
+          <div className="pdp-sticky-cta__thumb">
+            {current && !/\.(mp4|webm|mov|m4v|ogg)(\?|$)/i.test(current.image_url) && (
+              <img src={current.image_url} alt={product.name} loading="lazy" />
+            )}
+          </div>
+          <div className="pdp-sticky-cta__meta">
+            <div className="pdp-sticky-cta__name">{product.name}</div>
+            <div className="pdp-sticky-cta__price">${Number(product.price).toFixed(2)}</div>
+          </div>
+          <Link to="/shop-the-kit" className="pdp-sticky-cta__btn">Add</Link>
+        </div>
+      </div>
 
       <style>{`@media (max-width: 768px){ .pdp-grid{ grid-template-columns: 1fr !important; gap: 32px !important; } }`}</style>
     </div>
