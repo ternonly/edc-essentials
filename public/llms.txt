@@ -1,0 +1,27 @@
+# Survival72
+
+> Professional-grade modular EDC tools engineered for 72-hour deployment. Pliers, wrench, axe and gift configurations. Ships across the GCC.
+
+Survival72 designs and sells a modular Everyday Carry (EDC) system built around interchangeable tool modules — precision multi-pliers, a multi-function wrench and a tactical axe — packaged in magnetic gift boxes for individuals, corporate gifting and government procurement.
+
+## Pages
+
+- [Home](/): Brand overview and featured modules.
+- [Shop the Kit](/shop-the-kit): Configure and order the modular Survival72 kit.
+- [Gift Box](/products/gift-box): Premium magnetic gift box configurations.
+- [About](/about): Company story, design philosophy and team.
+- [Our Promise](/our-promise): Quality, warranty and service commitments.
+- [Blog](/blog): Field guides, product deep-dives and survival education.
+- [Wholesale & Procurement](/wholesale): Bulk orders for corporate and government buyers.
+- [Corporate & Bespoke](/corporate-partnerships): Custom branding, engraved handles and bespoke editions (25+ units).
+- [Military Discount](/military-discount): Verified discount program for active and veteran service members.
+- [Contact](/contact): Support, sales and procurement contact details.
+
+## Optional
+
+- [Warranty](/warranty): Lifetime warranty terms.
+- [Shipping Policy](/shipping-policy): Delivery times and regions.
+- [Return Policy](/return-policy): Returns and refunds.
+- [Cancellation Policy](/cancellation-policy): Order cancellation terms.
+- [Privacy Policy](/privacy-policy): Data and privacy practices.
+- [Terms of Service](/terms-of-service): Site and purchase terms.

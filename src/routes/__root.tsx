@@ -104,7 +104,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Survival72™ — Built for the 72 hours that matter" },
+      { title: "Survival72™" },
       { name: "description", content: "Professional-grade modular EDC tools engineered for 72-hour deployment. Ships across the GCC." },
       { name: "author", content: "Survival72" },
       { name: "robots", content: "index,follow,max-image-preview:large" },

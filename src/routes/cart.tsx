@@ -23,7 +23,10 @@ export const Route = createFileRoute("/cart")({
   head: () => ({
     meta: [
       { title: "Your Cart — Survival72™" },
-      { name: "description", content: "Review your selected modules and proceed to checkout." },
+      { name: "description", content: "Review your selected Survival72 modules, apply promo codes and proceed to secure checkout." },
+      { property: "og:title", content: "Your Cart — Survival72™" },
+      { property: "og:description", content: "Review your selected Survival72 modules and proceed to checkout." },
+      { property: "og:url", content: "https://survival72hour.com/cart" },
       { name: "robots", content: "noindex,follow" },
     ],
   }),
